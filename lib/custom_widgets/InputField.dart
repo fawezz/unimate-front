@@ -20,6 +20,7 @@ class InputField extends StatelessWidget {
   final IconData prefixIcon;
   final IconData? suffixIcon;
   final bool suffix;
+  RxBool passwordVisible = false.obs;
 
   Rx<TextEditingController> textController;
 
@@ -36,7 +37,7 @@ class InputField extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -55,8 +56,10 @@ class InputField extends StatelessWidget {
                       color: secondaryColor),
                   padding: EdgeInsets.only(left: 10.w, right: 10.w),
                   child: Center(
-                    child: TextFormField(
+                      child: Obx(
+                    () => TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
+                      obscureText: suffix ? !passwordVisible.value : false.obs.value,
                       style: TextStyle(color: Colors.white, fontSize: 16.sp),
                       decoration: InputDecoration(
                         hintText: 'please enter your $label...',
@@ -66,16 +69,29 @@ class InputField extends StatelessWidget {
                           prefixIcon,
                           color: Colors.white,
                         ),
-                        suffixIcon: Icon(
-                          suffixIcon,
-                          color: Colors.white,
-                        ),
+                        suffixIcon: suffix
+                            ? GestureDetector(
+                                onTap: suffix == false
+                                    ? null
+                                    : () {
+                                        passwordVisible.value =
+                                            !passwordVisible.value;
+                                      },
+                                child: Obx(
+                                  () => Icon(
+                                    !passwordVisible.value
+                                        ? Icons.remove_red_eye_outlined
+                                        : Icons.remove_red_eye,
+                                    color: Colors.white,
+                                  ),
+                                ))
+                            : null,
                       ),
                       validator: (String? value) {
                         return value!.isEmpty ? 'this field is required' : null;
                       },
                     ),
-                  )),
+                  ))),
             ),
           ),
         ],

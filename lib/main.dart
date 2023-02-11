@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
 
 void main() {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           home: const SignUpView(),
           getPages: [
             GetPage(name: '/signUp', page: () => const SignUpView()),
+            GetPage(name: '/login', page: () => const LoginView()),
           ],
         );
       },

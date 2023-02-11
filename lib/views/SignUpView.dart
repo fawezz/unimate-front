@@ -1,8 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/custom_widgets/InputField.dart';
 import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
 import '../controllers/SignUpController.dart';
@@ -46,13 +44,17 @@ class SignUpView extends StatelessWidget {
                 prefixIcon: Icons.email,
                 textController: controller.emailController),
             InputField(
-                label: "Password",
-                prefixIcon: Icons.lock,
-                textController: controller.passwordController),
+              label: "Password",
+              prefixIcon: Icons.lock,
+              textController: controller.passwordController,
+              suffix: true,
+            ),
             InputField(
-                label: "Password Confirmation",
-                prefixIcon: Icons.lock_outlined,
-                textController: controller.password2Controller),
+              label: "Password Confirmation",
+              prefixIcon: Icons.lock_outlined,
+              textController: controller.password2Controller,
+              suffix: true,
+            ),
             0.05.sh.verticalSpace,
             RedButton(
                 text: "Register",
@@ -62,8 +64,8 @@ class SignUpView extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.h),
               child: GestureDetector(
-                onTap: (){
-                  print('bbb');
+                onTap: () {
+                  Get.offAndToNamed('/login');
                 },
                 child: const Text(
                   'I’m already a member !',
