@@ -13,10 +13,11 @@ class SignUpView extends StatelessWidget {
     SignUpController controller = Get.put(SignUpController());
     return SafeArea(
         child: Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.all(24.sp),
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -61,6 +62,7 @@ class SignUpView extends StatelessWidget {
                   text: "Register",
                   function: () {
                     print('aaa');
+                    controller.signUp();
                   }),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.h),

@@ -15,10 +15,11 @@ class LoginView extends StatelessWidget {
     LoginController controller = Get.put(LoginController());
     return SafeArea(
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
+          //resizeToAvoidBottomInset: false,
           body: Padding(
             padding: EdgeInsets.all(24.sp),
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

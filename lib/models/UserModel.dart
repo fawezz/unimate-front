@@ -1,5 +1,5 @@
 class User {
-  String? sId;
+  String? id;
   String? fullname;
   String? email;
   String? pwd;
@@ -8,7 +8,7 @@ class User {
   int? otp;
 
   User(
-      {this.sId,
+      {this.id,
         this.fullname,
         this.email,
         this.pwd,
@@ -18,7 +18,7 @@ class User {
        });
 
   User.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    id = json['_id'];
     fullname = json['fullname'];
     email = json['email'];
     pwd = json['pwd'];
@@ -29,7 +29,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
+    data['_id'] = this.id;
     data['fullname'] = this.fullname;
     data['email'] = this.email;
     data['pwd'] = this.pwd;
@@ -41,6 +41,6 @@ class User {
 
   @override
   String toString() {
-    return 'User{Id: $sId, fullname: $fullname, email: $email, pwd: $pwd, pic: $pic, isVerified: $isVerified, otp: $otp}';
+    return 'User{Id: $id, fullname: $fullname, email: $email, pwd: $pwd, pic: $pic, isVerified: $isVerified, otp: $otp}';
   }
 }

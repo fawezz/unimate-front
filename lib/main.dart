@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
+import 'package:univ_chat_gpt/views/TestView.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +33,9 @@ class MyApp extends StatelessWidget {
           getPages: [
             GetPage(name: '/signUp', page: () => const SignUpView()),
             GetPage(name: '/login', page: () => const LoginView()),
+            //GetPage(name: '/test', page: () => const TestView()),
           ],
+          builder: EasyLoading.init(),
         );
       },
     );
