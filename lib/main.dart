@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
               scaffoldBackgroundColor: Colors.white,
               canvasColor: Colors.transparent
           ),
-          home: const SignUpView(),
+          home: const LoginView(),
           getPages: [
             GetPage(name: '/signUp', page: () => const SignUpView()),
             GetPage(name: '/login', page: () => const LoginView()),

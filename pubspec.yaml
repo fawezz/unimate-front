@@ -33,6 +33,7 @@ dependencies:
   flutter_screenutil: ^5.6.1
   hexcolor: ^3.0.1
   get: ^4.6.5
+  http: ^0.13.5
 
 
   # The following adds the Cupertino Icons font to your application.

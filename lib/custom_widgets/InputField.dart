@@ -58,6 +58,7 @@ class InputField extends StatelessWidget {
                   child: Center(
                       child: Obx(
                     () => TextFormField(
+                      controller: textController.value,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       obscureText: suffix ? !passwordVisible.value : false.obs.value,
                       style: TextStyle(color: Colors.white, fontSize: 16.sp),

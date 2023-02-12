@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:univ_chat_gpt/services/userService.dart';
 
 class LoginController extends GetxController{
 
@@ -8,6 +9,11 @@ class LoginController extends GetxController{
 
   final bool isEmailValid = false;
 
+
+
+  void login(){
+    UserService.postLogin(emailController.value.text, passwordController.value.text);
+  }
   @override
   void onInit() {
 
