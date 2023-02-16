@@ -30,12 +30,13 @@ class MyApp extends StatelessWidget {
               //fontFamily: "Cairo",
               scaffoldBackgroundColor: Colors.white,
               canvasColor: Colors.transparent),
-          home: const ChangePwd(), 
+          home: const LoginView(),
           getPages: [
             GetPage(name: '/signUp', page: () => const SignUpView()),
             GetPage(name: '/login', page: () => const LoginView()),
             GetPage(name: '/forgetPwd', page: () => const ForgetPwdView()),
-            GetPage(name: '/forgetPwdEmail', page: () => const ForgetPwdEmail()),
+            GetPage(
+                name: '/forgetPwdEmail', page: () => const ForgetPwdEmail()),
             GetPage(name: '/changePwd', page: () => const ChangePwd()),
           ],
           builder: EasyLoading.init(),

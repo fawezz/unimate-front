@@ -8,7 +8,6 @@ class UserService {
   static const otpVerifyUrl = "user/verifyotp";
   static const changePwd = "user/resetpwd";
 
-
   static Future<http.Response> postSendOTP(String email) async {
     Uri sendOTPUri = Uri.parse(baseUrl + otpUrl);
     final data = {"email": email};
@@ -19,9 +18,10 @@ class UserService {
     });
     return response;
   }
-  static Future<http.Response> postVerifyOTP(String email,int otp) async {
+
+  static Future<http.Response> postVerifyOTP(String email, int otp) async {
     Uri verifyOTPUri = Uri.parse(baseUrl + otpVerifyUrl);
-    final data = {"email": email,"otp": otp};
+    final data = {"email": email, "otp": otp};
     String params = jsonEncode(data);
     http.Response response =
         await http.post(verifyOTPUri, body: params, headers: <String, String>{
@@ -29,12 +29,13 @@ class UserService {
     });
     return response;
   }
-  static Future<http.Response> postResetPwd(String email,String new_pwd) async {
-    Uri verifyOTPUri = Uri.parse(baseUrl + changePwd);
-    final data = {"email": email,"new_pwd": new_pwd  };
+
+  static Future<http.Response> putResetPwd(String email, String pwd) async {
+    Uri changePwdURI = Uri.parse(baseUrl + changePwd);
+    final data = {"email": email, "new_pwd": pwd};
     String params = jsonEncode(data);
     http.Response response =
-        await http.post(verifyOTPUri, body: params, headers: <String, String>{
+        await http.put(changePwdURI, body: params, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     });
     return response;

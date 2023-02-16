@@ -21,14 +21,15 @@ class ForgetPwdEmail extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.fromLTRB(24.sp, 50.sp, 24.sp, 24.sp),
           child: Column(children: [
+            0.1.sh.verticalSpace,
             Text(
-              "Forget Password?",
+              "Forget Password? 😕",
               style: TextStyle(
                   color: color.secondaryColor,
                   fontSize: 24,
                   fontWeight: FontWeight.bold),
             ),
-            0.2.sh.verticalSpace,
+            0.1.sh.verticalSpace,
             const Text(
               "Enter the email address associated with your account",
               textAlign: TextAlign.center,

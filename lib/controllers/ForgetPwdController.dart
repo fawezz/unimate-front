@@ -85,7 +85,7 @@ class ForgetPwd extends GetxController {
             await Future.delayed(const Duration(milliseconds: 700));
             EasyLoading.dismiss();
             Alert(context: Get.context!, title: "Done").show();
-            Get.offAndToNamed('/ChangePwd');
+            Get.offAndToNamed('/changePwd');
           }
           break;
         case 403:
@@ -129,7 +129,7 @@ class ForgetPwd extends GetxController {
     if (comparePwd()) {
       EasyLoading.show(status: 'loading...');
       SharedPreferences pref = await SharedPreferences.getInstance();
-      final response = await UserService.postResetPwd(
+      final response = await UserService.putResetPwd(
           pref.getString("email")!, password.value.text);
       EasyLoading.dismiss();
       Map<String, dynamic> body = jsonDecode(response.body);
@@ -143,12 +143,9 @@ class ForgetPwd extends GetxController {
             Get.offAndToNamed('/login');
           }
           break;
-        case 403:
+        case 404:
           {
-            Alert(
-                    context: Get.context!,
-                    title: "Password doest confirm",
-                    desc: "Password doest confirm")
+            Alert(context: Get.context!, title: "Error", desc: body["message"])
                 .show();
           }
           break;
