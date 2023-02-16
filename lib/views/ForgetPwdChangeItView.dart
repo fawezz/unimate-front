@@ -53,7 +53,7 @@ Password 🔒''',
             ),
             0.05.sh.verticalSpace,
             RedButton(
-                text: "Login",
+                text: "Change password",
                 function: () {
                   controller.changePwd();
                 }),

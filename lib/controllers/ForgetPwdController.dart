@@ -159,6 +159,12 @@ class ForgetPwd extends GetxController {
           }
           break;
       }
+    } else {
+      Alert(
+              context: Get.context!,
+              title: "Failure ⚠️",
+              desc: "Password doest confirm")
+          .show();
     }
   }
 
