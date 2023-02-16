@@ -58,9 +58,11 @@ class InputField extends StatelessWidget {
                   child: Center(
                       child: Obx(
                     () => TextFormField(
+                      controller: textController.value,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       obscureText: suffix ? !passwordVisible.value : false.obs.value,
                       style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                      textAlignVertical: TextAlignVertical.center,
                       decoration: InputDecoration(
                         hintText: 'please enter your $label...',
                         hintStyle: const TextStyle(color: Colors.white),
@@ -87,9 +89,6 @@ class InputField extends StatelessWidget {
                                 ))
                             : null,
                       ),
-                      validator: (String? value) {
-                        return value!.isEmpty ? 'this field is required' : null;
-                      },
                     ),
                   ))),
             ),

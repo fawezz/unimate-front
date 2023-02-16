@@ -5,12 +5,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:univ_chat_gpt/controllers/ForgetPwdController.dart';
 import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
 import 'package:univ_chat_gpt/app/Colors.dart' as color;
+import 'package:univ_chat_gpt/services/userService.dart';
 
-class ForgetPwdView extends StatelessWidget {
+class ForgetPwdView extends StatefulWidget {
   const ForgetPwdView({super.key});
 
   @override
+  State<ForgetPwdView> createState() => _ForgetPwdViewState();
+}
+
+class _ForgetPwdViewState extends State<ForgetPwdView> {
+  @override
   Widget build(BuildContext context) {
+    String otp = "";
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     ForgetPwd controller = Get.put(ForgetPwd());
@@ -45,8 +52,10 @@ class ForgetPwdView extends StatelessWidget {
                       height: 68,
                       width: 64,
                       child: TextFormField(
-                        onChanged: (value) =>
-                            {FocusScope.of(context).nextFocus()},
+                        controller: controller.otp1.value,
+                        onChanged: (value) => {
+                          FocusScope.of(context).nextFocus(),
+                        },
                         decoration: const InputDecoration(
                           hintText: "0",
                           contentPadding: EdgeInsets.all(10.0),
@@ -64,8 +73,10 @@ class ForgetPwdView extends StatelessWidget {
                       height: 68,
                       width: 64,
                       child: TextFormField(
-                        onChanged: (value) =>
-                            {FocusScope.of(context).nextFocus()},
+                        controller: controller.otp2.value,
+                        onChanged: (value) => {
+                          FocusScope.of(context).nextFocus(),
+                        },
                         decoration: const InputDecoration(
                           hintText: "0",
                           contentPadding: EdgeInsets.all(10.0),
@@ -83,8 +94,10 @@ class ForgetPwdView extends StatelessWidget {
                       height: 68,
                       width: 64,
                       child: TextFormField(
-                        onChanged: (value) =>
-                            {FocusScope.of(context).nextFocus()},
+                        controller: controller.otp3.value,
+                        onChanged: (value) => {
+                          FocusScope.of(context).nextFocus(),
+                        },
                         decoration: const InputDecoration(
                           hintText: "0",
                           contentPadding: EdgeInsets.all(10.0),
@@ -102,8 +115,10 @@ class ForgetPwdView extends StatelessWidget {
                       height: 68,
                       width: 64,
                       child: TextFormField(
-                        onChanged: (value) =>
-                            {FocusScope.of(context).nextFocus()},
+                        controller: controller.otp4.value,
+                        onChanged: (value) => {
+                          FocusScope.of(context).nextFocus(),
+                        },
                         decoration: const InputDecoration(
                           hintText: "0",
                           contentPadding: EdgeInsets.all(10.0),
@@ -127,7 +142,7 @@ class ForgetPwdView extends StatelessWidget {
               child: RedButton(
                   text: "Confirm",
                   function: () {
-                    print('Confirmed');
+                    controller.verifyOTP();
                   }),
             ),
           ]),
