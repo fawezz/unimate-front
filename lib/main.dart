@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:univ_chat_gpt/views/ForgetPasswordOTPView.dart';
+import 'package:univ_chat_gpt/views/ForgetPwdChangeItView.dart';
+import 'package:univ_chat_gpt/views/ForgetPwdEmail.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
 import 'package:univ_chat_gpt/views/TestView.dart';
@@ -19,7 +22,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(428, 926),
       minTextAdapt: true,
-      builder: (context , child) {
+      builder: (context, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'University ChatGPT',
@@ -27,13 +30,16 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.red,
               //fontFamily: "Cairo",
               scaffoldBackgroundColor: Colors.white,
-              canvasColor: Colors.transparent
-          ),
+              canvasColor: Colors.transparent),
           home: const LoginView(),
           getPages: [
             GetPage(name: '/signUp', page: () => const SignUpView()),
             GetPage(name: '/login', page: () => const LoginView()),
             //GetPage(name: '/test', page: () => const TestView()),
+            GetPage(name: '/forgetPwd', page: () => const ForgetPwdView()),
+            GetPage(
+                name: '/forgetPwdEmail', page: () => const ForgetPwdEmail()),
+            GetPage(name: '/changePwd', page: () => const ChangePwd()),
           ],
           builder: EasyLoading.init(),
         );
