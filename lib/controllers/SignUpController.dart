@@ -7,8 +7,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../services/userService.dart';
 
-class SignUpController extends GetxController{
-
+class SignUpController extends GetxController {
   final nameController = TextEditingController().obs;
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
@@ -17,59 +16,93 @@ class SignUpController extends GetxController{
   final bool isEmailValid = false;
 
   Future<void> signUp() async {
-    if(validateFields()){
+    if (validateFields()) {
       EasyLoading.show(status: 'loading...');
-      final response = await UserService.postSignUp(nameController.value.text, emailController.value.text,
-          passwordController.value.text);
+      final response = await UserService.postSignUp(nameController.value.text,
+          emailController.value.text, passwordController.value.text);
       EasyLoading.dismiss();
 
       Map<String, dynamic> body = jsonDecode(response.body);
-      switch(response.statusCode) {
-        case 201: {
-          EasyLoading.showSuccess(body["message"]);
-          Get.offNamed("/login");
-        }
-        break;
-        case 403: {
-          Alert(context: Get.context!, title: "Attention", desc: body["message"] + " Please, Login").show();
-        }
-        break;
-        default: {
-          Alert(context: Get.context!, title: "Error", desc: body["message"]).show();
-        }
-        break;
+      switch (response.statusCode) {
+        case 201:
+          {
+            EasyLoading.showSuccess(body["message"]);
+            Get.offNamed("/login");
+          }
+          break;
+        case 403:
+          {
+            Alert(
+                    context: Get.context!,
+                    title: "Attention",
+                    desc: body["message"] + " Please, Login")
+                .show();
+          }
+          break;
+        default:
+          {
+            Alert(context: Get.context!, title: "Error", desc: body["message"])
+                .show();
+          }
+          break;
       }
     }
   }
 
-  bool validateFields(){
-    if(passwordController.value.text.isEmpty || password2Controller.value.text.isEmpty
-        || emailController.value.text.isEmpty || nameController.value.text.isEmpty ){
-      Alert(context: Get.context!, title: "Required Fields",
-          desc: "Please fill all fields").show();
-      return false;
-    }
-    if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+\.[a-zA-Z]+")
-        .hasMatch(emailController.value.text)) {
-      Alert(context: Get.context!, title: "Invalid Email", desc: "Please enter a valid Email").show();
-      return false;
-    }
-    if(passwordController.value.text.length < 8){
-      Alert(context: Get.context!, title: "Password too weak",
-          desc: "Password must be at least 8 characters long").show();
-      return false;
-    }
-    if(passwordController.value.text != password2Controller.value.text){
-      Alert(context: Get.context!, title: "Mismatched Passwords",
-          desc: "The password field does not match the password confirmation").show();
+  bool validateFields() {
+    if (validateName(nameController.value.text) != null ||
+        validatePassword(passwordController.value.text) != null ||
+        validatePasswordsMatching(password2Controller.value.text) != null ||
+        validateEmail(emailController.value.text) != null ||
+        validatePassword(passwordController.value.text) != null) {
+      Alert(
+              context: Get.context!,
+              title: "Attention",
+              desc: "Please fill all fields correctly")
+          .show();
       return false;
     }
     return true;
   }
 
+  String? validateName(String? value) {
+    if (!RegExp(
+            r"^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)")
+        .hasMatch(value!)) {
+      return "Please enter a valid Name";
+    } else {
+      return null;
+    }
+  }
+
+  String? validateEmail(String? value) {
+    if (!RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9-]+\.[a-zA-Z][a-zA-Z]+")
+        .hasMatch(value!)) {
+      return "Please enter a valid Email";
+    } else {
+      return null;
+    }
+  }
+
+  String? validatePassword(String? value) {
+    if (passwordController.value.text.length < 8) {
+      return "Password must be at least 8 characters long";
+    } else {
+      return null;
+    }
+  }
+
+  String? validatePasswordsMatching(String? value) {
+    if (passwordController.value.text != password2Controller.value.text) {
+      return "Passwords do not match, please verify";
+    } else {
+      return null;
+    }
+  }
+
   @override
   void onInit() {
-
     super.onInit();
   }
 
@@ -78,6 +111,3 @@ class SignUpController extends GetxController{
     super.onClose();
   }
 }
-
-
-

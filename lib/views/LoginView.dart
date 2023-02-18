@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
+import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/controllers/LoginController.dart';
 import 'package:univ_chat_gpt/custom_widgets/InputField.dart';
 import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
@@ -52,14 +53,18 @@ class LoginView extends StatelessWidget {
               ),
               0.05.sh.verticalSpace,
               InputField(
-                  label: "Email",
-                  prefixIcon: Icons.email,
-                  textController: controller.emailController),
+                label: "Email",
+                prefixIcon: Icons.email,
+                textController: controller.emailController,
+                validatorFunction: controller.validateEmail,
+                keyboardType: TextInputType.emailAddress,
+              ),
               InputField(
                 label: "Password",
                 prefixIcon: Icons.lock,
                 textController: controller.passwordController,
                 suffix: true,
+                validatorFunction: controller.validatePassword,
               ),
               Align(
                 alignment: Alignment.centerRight,
@@ -67,7 +72,7 @@ class LoginView extends StatelessWidget {
                   padding: EdgeInsets.only(right: 10.w),
                   child: GestureDetector(
                     onTap: () {
-                      print('forgot');
+                      Get.toNamed(NamedRoutes.forgetPwdEmail);
                     },
                     child: Text(
                       'Forgot Password?',
@@ -90,7 +95,7 @@ class LoginView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 15.h),
                 child: GestureDetector(
                   onTap: () {
-                    Get.offAndToNamed('/signUp');
+                    Get.offAndToNamed(NamedRoutes.signUp);
                   },
                   child: const Text(
                     'new user? Register now !',

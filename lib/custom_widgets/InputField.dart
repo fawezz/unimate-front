@@ -10,17 +10,18 @@ class InputField extends StatelessWidget {
       required this.prefixIcon,
       this.suffixIcon,
       required this.textController,
-      required,
-      this.function,
+      this.validatorFunction,
+      this.keyboardType,
       this.suffix = false})
       : super(key: key);
 
   final String label;
-  final VoidCallback? function;
   final IconData prefixIcon;
   final IconData? suffixIcon;
   final bool suffix;
   RxBool passwordVisible = false.obs;
+  TextInputType? keyboardType;
+  final String? Function(String?)? validatorFunction;
 
   Rx<TextEditingController> textController;
 
@@ -46,51 +47,53 @@ class InputField extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: SizedBox(
-              height: 0.0818.sh,
               width: 0.88.sw,
-              child: Container(
-                  width: 0.88.sw,
-                  height: 0.07.sh,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: secondaryColor),
-                  padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Center(
-                      child: Obx(
-                    () => TextFormField(
-                      controller: textController.value,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: suffix ? !passwordVisible.value : false.obs.value,
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                      textAlignVertical: TextAlignVertical.center,
-                      decoration: InputDecoration(
-                        hintText: 'please enter your $label...',
-                        hintStyle: const TextStyle(color: Colors.white),
-                        border: InputBorder.none,
-                        prefixIcon: Icon(
-                          prefixIcon,
-                          color: Colors.white,
-                        ),
-                        suffixIcon: suffix
-                            ? GestureDetector(
-                                onTap: suffix == false
-                                    ? null
-                                    : () {
-                                        passwordVisible.value =
-                                            !passwordVisible.value;
-                                      },
-                                child: Obx(
-                                  () => Icon(
-                                    !passwordVisible.value
-                                        ? Icons.remove_red_eye_outlined
-                                        : Icons.remove_red_eye,
-                                    color: Colors.white,
-                                  ),
-                                ))
-                            : null,
+              child: Obx(
+                () => TextFormField(
+              controller: textController.value,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              obscureText: suffix ? !passwordVisible.value : false.obs.value,
+              keyboardType: keyboardType,
+              style: TextStyle(color: Colors.white, fontSize: 16.sp),
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: secondaryColor,
+                hintText: 'please enter your $label...',
+                hintStyle: const TextStyle(color: Colors.white),
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: const BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
                       ),
-                    ),
-                  ))),
+                ),
+                prefixIcon: Icon(
+                  prefixIcon,
+                  color: Colors.white,
+                ),
+                suffixIcon: suffix
+                    ? GestureDetector(
+                        onTap: suffix == false
+                            ? null
+                            : () {
+                                passwordVisible.value =
+                                    !passwordVisible.value;
+                              },
+                        child: Obx(
+                          () => Icon(
+                            !passwordVisible.value
+                                ? Icons.remove_red_eye_outlined
+                                : Icons.remove_red_eye,
+                            color: Colors.white,
+                          ),
+                        ))
+                    : null,
+              ),
+              validator: validatorFunction,
+                ),
+              ),
             ),
           ),
         ],

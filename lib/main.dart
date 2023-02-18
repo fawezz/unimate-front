@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:univ_chat_gpt/views/ForgetPasswordOTPView.dart';
-import 'package:univ_chat_gpt/views/ForgetPwdChangeItView.dart';
-import 'package:univ_chat_gpt/views/ForgetPwdEmail.dart';
+import 'package:univ_chat_gpt/app/Routes.dart';
+import 'package:univ_chat_gpt/views/forgotPwd/ResetPasswordView.dart';
+import 'package:univ_chat_gpt/views/forgotPwd/ForgetPwdEmail.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
 import 'package:univ_chat_gpt/views/TestView.dart';
+
+import 'views/forgotPwd/ForgetPwdOTPView.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,13 +35,18 @@ class MyApp extends StatelessWidget {
               canvasColor: Colors.transparent),
           home: const LoginView(),
           getPages: [
-            GetPage(name: '/signUp', page: () => const SignUpView()),
-            GetPage(name: '/login', page: () => const LoginView()),
+            GetPage(name: NamedRoutes.signUp, page: () => const SignUpView()),
+            GetPage(name: NamedRoutes.login, page: () => const LoginView()),
             //GetPage(name: '/test', page: () => const TestView()),
-            GetPage(name: '/forgetPwd', page: () => const ForgetPwdView()),
             GetPage(
-                name: '/forgetPwdEmail', page: () => const ForgetPwdEmail()),
-            GetPage(name: '/changePwd', page: () => const ChangePwd()),
+                name: NamedRoutes.forgetPwdOTP,
+                page: () => const ForgetPwdOTPView()),
+            GetPage(
+                name: NamedRoutes.forgetPwdEmail,
+                page: () => const ForgetPwdEmail()),
+            GetPage(
+                name: NamedRoutes.resetPwd,
+                page: () => const ResetPasswordView()),
           ],
           builder: EasyLoading.init(),
         );

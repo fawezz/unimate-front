@@ -7,27 +7,21 @@ import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
 import 'package:univ_chat_gpt/app/Colors.dart' as color;
 import 'package:univ_chat_gpt/services/userService.dart';
 
-class ForgetPwdView extends StatefulWidget {
-  const ForgetPwdView({super.key});
+class ForgetPwdOTPView extends StatelessWidget {
+  const ForgetPwdOTPView({super.key});
 
-  @override
-  State<ForgetPwdView> createState() => _ForgetPwdViewState();
-}
-
-class _ForgetPwdViewState extends State<ForgetPwdView> {
   @override
   Widget build(BuildContext context) {
-    String otp = "";
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    ForgetPwd controller = Get.put(ForgetPwd());
+    double otpFieldWidth = 64;
+    double otpFieldHeight = 68;
+    ForgetPwd controller = Get.find();
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Padding(
           padding: EdgeInsets.all(24.sp),
           child: Column(children: [
-            0.2.sh.verticalSpace,
+            0.15.sh.verticalSpace,
             Text(
               "OTP",
               style: TextStyle(
@@ -35,7 +29,7 @@ class _ForgetPwdViewState extends State<ForgetPwdView> {
                   fontSize: 24,
                   fontWeight: FontWeight.bold),
             ),
-            0.009.sh.verticalSpace,
+            0.1.sh.verticalSpace,
             const Text(
               "Enter the verification Code We just sent you on your email address",
               textAlign: TextAlign.center,
@@ -49,10 +43,10 @@ class _ForgetPwdViewState extends State<ForgetPwdView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      height: 68,
-                      width: 64,
+                      height: otpFieldHeight.h,
+                      width: otpFieldWidth.w,
                       child: TextFormField(
-                        controller: controller.otp1.value,
+                        controller: controller.otp1controller.value,
                         onChanged: (value) => {
                           FocusScope.of(context).nextFocus(),
                         },
@@ -70,10 +64,10 @@ class _ForgetPwdViewState extends State<ForgetPwdView> {
                       ),
                     ),
                     SizedBox(
-                      height: 68,
-                      width: 64,
+                      height: otpFieldHeight.h,
+                      width: otpFieldWidth.w,
                       child: TextFormField(
-                        controller: controller.otp2.value,
+                        controller: controller.otp2Controller.value,
                         onChanged: (value) => {
                           FocusScope.of(context).nextFocus(),
                         },
@@ -91,10 +85,10 @@ class _ForgetPwdViewState extends State<ForgetPwdView> {
                       ),
                     ),
                     SizedBox(
-                      height: 68,
-                      width: 64,
+                      height: otpFieldHeight.h,
+                      width: otpFieldWidth.w,
                       child: TextFormField(
-                        controller: controller.otp3.value,
+                        controller: controller.otp3Controller.value,
                         onChanged: (value) => {
                           FocusScope.of(context).nextFocus(),
                         },
@@ -112,10 +106,10 @@ class _ForgetPwdViewState extends State<ForgetPwdView> {
                       ),
                     ),
                     SizedBox(
-                      height: 68,
-                      width: 64,
+                      height: otpFieldHeight.h,
+                      width: otpFieldWidth.w,
                       child: TextFormField(
-                        controller: controller.otp4.value,
+                        controller: controller.otp4Controller.value,
                         onChanged: (value) => {
                           FocusScope.of(context).nextFocus(),
                         },
@@ -136,9 +130,9 @@ class _ForgetPwdViewState extends State<ForgetPwdView> {
                 ),
               ),
             ),
+            0.32.sh.verticalSpace,
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                  height * 0.1, height * 0.4, height * 0.1, 0),
+              padding: const EdgeInsets.all(10),
               child: RedButton(
                   text: "Confirm",
                   function: () {
