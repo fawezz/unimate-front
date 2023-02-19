@@ -3,11 +3,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
+//import 'package:univ_chat_gpt/views/ProfileView.dart';
 import 'package:univ_chat_gpt/views/forgotPwd/ResetPasswordView.dart';
 import 'package:univ_chat_gpt/views/forgotPwd/ForgetPwdEmail.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
-import 'package:univ_chat_gpt/views/TestView.dart';
 
 import 'views/forgotPwd/ForgetPwdOTPView.dart';
 
@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
           getPages: [
             GetPage(name: NamedRoutes.signUp, page: () => const SignUpView()),
             GetPage(name: NamedRoutes.login, page: () => const LoginView()),
-            //GetPage(name: '/test', page: () => const TestView()),
             GetPage(
                 name: NamedRoutes.forgetPwdOTP,
                 page: () => const ForgetPwdOTPView()),
@@ -47,6 +46,7 @@ class MyApp extends StatelessWidget {
             GetPage(
                 name: NamedRoutes.resetPwd,
                 page: () => const ResetPasswordView()),
+            //GetPage(name: NamedRoutes.profile, page: () => ProfileView()),
           ],
           builder: EasyLoading.init(),
         );

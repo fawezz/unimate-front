@@ -8,21 +8,20 @@ import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/services/userService.dart';
 
 class ForgetPwd extends GetxController {
-  //Getting The email from ForgetPwdView
   final emailController = TextEditingController().obs;
-  //Getting Password&Confirm FromForgetPwdChangeItView
   final passwordController = TextEditingController().obs;
   final confirmPasswordController = TextEditingController().obs;
 
-  //Refering to the fields To acces their Values
-  final otp1controller = TextEditingController().obs;
+  late final String email;
+
+  final otp1Controller = TextEditingController().obs;
   final otp2Controller = TextEditingController().obs;
   final otp3Controller = TextEditingController().obs;
   final otp4Controller = TextEditingController().obs;
 
   //Sending OTP Post Request
   Future<void> sendOTP() async {
-    if (true) {
+    if (validateEmail(emailController.value.text) == null) {
       EasyLoading.show(status: 'loading...');
       final response =
           await UserService.postSendOTP(emailController.value.text);
@@ -32,16 +31,13 @@ class ForgetPwd extends GetxController {
       switch (response.statusCode) {
         case 200:
           {
-            EasyLoading.showSuccess("Success");
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setString("email", emailController.value.text);
-            await Future.delayed(const Duration(milliseconds: 700));
+            EasyLoading.showSuccess(
+                "OTP Sent To ${emailController.value.text}");
+            email = emailController.value.text;
+            await Future.delayed(const Duration(milliseconds: 1000));
             EasyLoading.dismiss();
-            Alert(
-                    context: Get.context!,
-                    title: "OTP Sent To ${emailController.value.text}")
-                .show();
-            Get.offAndToNamed(NamedRoutes.forgetPwdOTP);
+
+            Get.toNamed(NamedRoutes.forgetPwdOTP);
           }
           break;
         case 403:
@@ -60,6 +56,12 @@ class ForgetPwd extends GetxController {
           }
           break;
       }
+    } else {
+      Alert(
+              context: Get.context!,
+              title: "Attention",
+              desc: "Please fill the required fields")
+          .show();
     }
   }
 
@@ -67,9 +69,9 @@ class ForgetPwd extends GetxController {
   Future<void> verifyOTP() async {
     if (otpCollectorAndParser() != -1) {
       EasyLoading.show(status: 'loading...');
-      SharedPreferences pre = await SharedPreferences.getInstance();
-      final response = await UserService.postVerifyOTP(
-          pre.getString("email")!, otpCollectorAndParser());
+      print(email + "from verif orp");
+      final response =
+          await UserService.postVerifyOTP(email, otpCollectorAndParser());
       EasyLoading.dismiss();
 
       Map<String, dynamic> body = jsonDecode(response.body);
@@ -102,16 +104,22 @@ class ForgetPwd extends GetxController {
           }
           break;
       }
+    } else {
+      Alert(
+              context: Get.context!,
+              title: "Attention",
+              desc: "please fill in the otp code sent to your email.")
+          .show();
     }
   }
 
   //Fun to Get value of each OTP field , collect them as a string then parse it to Int and return it
   int otpCollectorAndParser() {
-    if (otp1controller.value.text != "" &&
+    if (otp1Controller.value.text != "" &&
         otp2Controller.value.text != "" &&
         otp3Controller.value.text != "" &&
         otp4Controller.value.text != "") {
-      return int.parse(otp1controller.value.text +
+      return int.parse(otp1Controller.value.text +
           otp2Controller.value.text +
           otp3Controller.value.text +
           otp4Controller.value.text);
@@ -131,11 +139,10 @@ class ForgetPwd extends GetxController {
       switch (response.statusCode) {
         case 200:
           {
-            EasyLoading.showSuccess("Success ✅");
-            await Future.delayed(const Duration(milliseconds: 700));
+            EasyLoading.showSuccess("Success ✅\nPassword Changed");
+            await Future.delayed(const Duration(milliseconds: 1000));
             EasyLoading.dismiss();
-            Alert(context: Get.context!, title: "Password Changed").show();
-            Get.offAndToNamed('/login');
+            Get.offAllNamed('/login');
           }
           break;
         case 404:
@@ -148,8 +155,8 @@ class ForgetPwd extends GetxController {
           {
             Alert(
                     context: Get.context!,
-                    title: "Failure ⚠️",
-                    desc: "Password doest confirm")
+                    title: "Error",
+                    desc: "Passwords do not match")
                 .show();
           }
           break;
@@ -157,15 +164,16 @@ class ForgetPwd extends GetxController {
     } else {
       Alert(
               context: Get.context!,
-              title: "Failure ⚠️",
-              desc: "Passwords do not match")
+              title: "Attention",
+              desc: "Please fill the fields correctly.")
           .show();
     }
   }
 
   //Fun to Compare Passwords Before sending the Request
   bool comparePwd() {
-    if (passwordController.value.text != confirmPasswordController.value.text) {
+    if (passwordController.value.text != confirmPasswordController.value.text ||
+        validatePassword("") != null) {
       return false;
     } else {
       return true;
@@ -206,5 +214,12 @@ class ForgetPwd extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    emailController.value.dispose();
+    passwordController.value.dispose();
+    confirmPasswordController.value.dispose();
+    otp1Controller.value.dispose();
+    otp2Controller.value.dispose();
+    otp3Controller.value.dispose();
+    otp4Controller.value.dispose();
   }
 }
