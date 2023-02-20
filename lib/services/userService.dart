@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Constants.dart';
 import 'package:http/http.dart' as http;
 import '../models/UserModel.dart';
@@ -8,7 +10,9 @@ class UserService {
   static const signUpUrl = "user/signup";
   static const otpUrl = "user/sendOTP";
   static const otpVerifyUrl = "user/verifyotp";
-  static const changePwd = "user/resetpwd";
+  static const changePwdUrl = "user/resetpwd";
+  static const userProfileUrl = "user/profile";
+  static const updateProfileUrl = "user/updateprofile";
 
   static Future<http.Response> postLogin(String email, String pwd) async {
     Uri signInUri = Uri.parse(baseUrl + signInUrl);
@@ -29,6 +33,42 @@ class UserService {
     http.Response response =
         await http.post(SignUpUri, body: params, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+    });
+    return response;
+  }
+
+  static Future<User?> getCurrentProfile() async {
+    Uri userProfileUri = Uri.parse(baseUrl + userProfileUrl);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token')!;
+
+    http.Response response =
+        await http.get(userProfileUri, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: 'Bearer $token'
+    });
+    Map<String, dynamic> body = jsonDecode(response.body);
+    User? currentUser;
+    if (response.statusCode == 200) {
+      currentUser = User.fromJson(body['user']);
+    }
+    return currentUser;
+  }
+
+  static Future<http.Response> putUpdateProfile(
+      String fullName, String? pwd) async {
+    Uri updateProfileUri = Uri.parse(baseUrl + updateProfileUrl);
+    pwd ??= "";
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token')!;
+
+    final data = {"fullname": fullName, "pwd": pwd};
+    String params = jsonEncode(data);
+    http.Response response = await http
+        .put(updateProfileUri, body: params, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token'
     });
     return response;
   }
@@ -56,7 +96,7 @@ class UserService {
   }
 
   static Future<http.Response> putResetPwd(String email, String pwd) async {
-    Uri changePwdURI = Uri.parse(baseUrl + changePwd);
+    Uri changePwdURI = Uri.parse(baseUrl + changePwdUrl);
     final data = {"email": email, "new_pwd": pwd};
     String params = jsonEncode(data);
     http.Response response =

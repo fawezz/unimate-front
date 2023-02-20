@@ -7,15 +7,15 @@ class User {
   bool? isVerified;
   int? otp;
 
-  User(
-      {this.id,
-        this.fullname,
-        this.email,
-        this.pwd,
-        this.pic,
-        this.isVerified,
-        this.otp,
-       });
+  User({
+    id,
+    fullname,
+    email,
+    pwd,
+    pic,
+    isVerified,
+    otp,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -29,13 +29,13 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.id;
-    data['fullname'] = this.fullname;
-    data['email'] = this.email;
-    data['pwd'] = this.pwd;
-    data['pic'] = this.pic;
-    data['isVerified'] = this.isVerified;
-    data['otp'] = this.otp;
+    data['_id'] = id;
+    data['fullname'] = fullname;
+    data['email'] = email;
+    data['pwd'] = pwd;
+    data['pic'] = pic;
+    data['isVerified'] = isVerified;
+    data['otp'] = otp;
     return data;
   }
 

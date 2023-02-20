@@ -40,7 +40,7 @@ class ForgetPwd extends GetxController {
             Get.toNamed(NamedRoutes.forgetPwdOTP);
           }
           break;
-        case 403:
+        case 422:
           {
             Alert(
                     context: Get.context!,

@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_chat_gpt/app/Colors.dart';
+import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/services/userService.dart';
 
 class LoginController extends GetxController {
@@ -29,9 +33,15 @@ class LoginController extends GetxController {
             prefs.setString("token", body["token"]);
             await Future.delayed(const Duration(milliseconds: 700));
             EasyLoading.dismiss();
-            Alert(context: Get.context!, title: "Success", desc: body["token"])
-                .show();
-            //Get.toNamed("/test");
+            Fluttertoast.showToast(
+                msg: body["message"],
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: primaryColor.withOpacity(0.8),
+                textColor: Colors.white,
+                fontSize: 14.0);
+            Get.offAllNamed(NamedRoutes.home);
           }
           break;
         case 403:

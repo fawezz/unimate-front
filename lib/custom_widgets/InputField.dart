@@ -45,9 +45,9 @@ class InputField extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: SizedBox(
-              width: 0.88.sw,
+              width: 0.85.sw,
               child: Obx(
                 () => TextFormField(
               controller: textController.value,

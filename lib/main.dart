@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
-//import 'package:univ_chat_gpt/views/ProfileView.dart';
+import 'package:univ_chat_gpt/views/EditProfileView.dart';
+import 'package:univ_chat_gpt/views/HomeView.dart';
 import 'package:univ_chat_gpt/views/forgotPwd/ResetPasswordView.dart';
 import 'package:univ_chat_gpt/views/forgotPwd/ForgetPwdEmail.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
-
 import 'views/forgotPwd/ForgetPwdOTPView.dart';
 
 void main() {
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.red,
               //fontFamily: "Cairo",
               scaffoldBackgroundColor: Colors.white,
-              canvasColor: Colors.transparent),
+              //canvasColor: Colors.transparent,
+              iconTheme: IconThemeData(color: primaryColor)),
           home: const LoginView(),
           getPages: [
             GetPage(name: NamedRoutes.signUp, page: () => const SignUpView()),
@@ -46,7 +48,10 @@ class MyApp extends StatelessWidget {
             GetPage(
                 name: NamedRoutes.resetPwd,
                 page: () => const ResetPasswordView()),
-            //GetPage(name: NamedRoutes.profile, page: () => ProfileView()),
+            GetPage(
+                name: NamedRoutes.editProfile,
+                page: () => const EditProfileView()),
+            GetPage(name: NamedRoutes.home, page: () => HomeView()),
           ],
           builder: EasyLoading.init(),
         );

@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
 import '../services/userService.dart';
 
 class SignUpController extends GetxController {

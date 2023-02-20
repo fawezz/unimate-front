@@ -55,7 +55,7 @@ class ForgetPwdOTPView extends StatelessWidget {
                             hintText: "0",
                             contentPadding: EdgeInsets.all(10.0),
                           ),
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           inputFormatters: [
@@ -76,7 +76,7 @@ class ForgetPwdOTPView extends StatelessWidget {
                             hintText: "0",
                             contentPadding: EdgeInsets.all(10.0),
                           ),
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           inputFormatters: [
@@ -97,7 +97,7 @@ class ForgetPwdOTPView extends StatelessWidget {
                             hintText: "0",
                             contentPadding: EdgeInsets.all(10.0),
                           ),
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           inputFormatters: [
@@ -118,7 +118,7 @@ class ForgetPwdOTPView extends StatelessWidget {
                             hintText: "0",
                             contentPadding: EdgeInsets.all(10.0),
                           ),
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           inputFormatters: [
