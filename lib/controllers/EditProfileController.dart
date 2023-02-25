@@ -6,9 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/src/response.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:univ_chat_gpt/app/Constants.dart';
 import 'package:univ_chat_gpt/services/userService.dart';
 
 import '../models/UserModel.dart';
@@ -22,7 +24,7 @@ class EditProfileController extends GetxController {
   Rx<User?>? currentUser;
   late final String fullName;
   late final String email;
-  Rx<String> profileImage = "".obs;
+  Rx<String> profileImage = imageBaseUrl.obs;
   Rx<bool> isLoading = true.obs;
 
   @override
@@ -37,8 +39,7 @@ class EditProfileController extends GetxController {
     if (currentUser?.value != null) {
       email = currentUser?.value?.email ?? "default email";
       fullName = currentUser?.value?.fullname ?? "default name";
-      //profileImage = currentUser?.value?.pic ?? "";
-      profileImage.value = "assets/icons/seller.jpg";
+      profileImage.value = profileImage.value + (currentUser?.value?.pic)!;
       fullNameController.value.text = fullName;
       isLoading.value = false;
       EasyLoading.dismiss();
@@ -131,17 +132,32 @@ class EditProfileController extends GetxController {
   }
 
 // SELECT IMAGE
-  final ImagePicker _picker = ImagePicker();
-  Rx<File>? imageFile;
 
   void selectImage(String _source) async {
+    final ImagePicker _picker = ImagePicker();
     XFile? selectedImage;
     selectedImage = await _picker.pickImage(
         source: _source == "CAMERA" ? ImageSource.camera : ImageSource.gallery);
     if (selectedImage == null) {
       return;
     }
-    imageFile?.value = File(selectedImage.path);
+
+    //
+    final response = await UserService.uploadPicture(selectedImage.path);
+    if (response.statusCode == 200) {
+      String body = jsonDecode(response.body);
+      EasyLoading.showSuccess("Success ✅\nImage Uploaded");
+      currentUser?.value?.pic = body;
+      profileImage.value = imageBaseUrl + (currentUser?.value?.pic)!;
+      await Future.delayed(const Duration(milliseconds: 700));
+      EasyLoading.dismiss();
+      print("Uploaded!");
+    } else {
+      EasyLoading.showSuccess("Error Uploading Image");
+      await Future.delayed(const Duration(milliseconds: 500));
+      EasyLoading.dismiss();
+      print("Error!");
+    }
   }
 
   showAddPictureBottomSheet() {

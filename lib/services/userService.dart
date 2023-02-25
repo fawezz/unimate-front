@@ -13,6 +13,7 @@ class UserService {
   static const changePwdUrl = "user/resetpwd";
   static const userProfileUrl = "user/profile";
   static const updateProfileUrl = "user/updateprofile";
+  static const uploadPictureUrl = "user/updateprofilepic";
 
   static Future<http.Response> postLogin(String email, String pwd) async {
     Uri signInUri = Uri.parse(baseUrl + signInUrl);
@@ -104,5 +105,17 @@ class UserService {
       'Content-Type': 'application/json; charset=UTF-8',
     });
     return response;
+  }
+
+  static Future<http.Response> uploadPicture(String picPath) async {
+    Uri uploadPictureUri = Uri.parse(baseUrl + uploadPictureUrl);
+    var request = http.MultipartRequest("PUT", uploadPictureUri);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token')!;
+    request.headers['authorization'] = 'Bearer $token';
+
+    request.files.add(await http.MultipartFile.fromPath('pic', picPath));
+    final response = await request.send();
+    return http.Response.fromStream(response);
   }
 }

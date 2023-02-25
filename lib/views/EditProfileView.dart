@@ -40,7 +40,7 @@ class EditProfileView extends StatelessWidget {
                       : CircleAvatar(
                           radius: 0.197.sw,
                           foregroundImage:
-                              Image.asset(controller.profileImage.value)
+                              Image.network(controller.profileImage.value)
                                   .image)),
                 ),
                 Positioned(
