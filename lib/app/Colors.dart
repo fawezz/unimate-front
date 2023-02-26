@@ -1,4 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 var primaryColor = HexColor("ED3736"); //red
 var secondaryColor = HexColor("9FA0A6"); //gray
+var thirdColor = HexColor("B3B9C9");
+
+const appBarColorLight = Colors.white;
+const appBarColorDark = Colors.black;
+
+const textColorLight = Colors.black;
+const textColorDark = Colors.white;
