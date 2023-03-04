@@ -6,4 +6,6 @@ class NamedRoutes {
   static const String resetPwd = '/resetPwd';
   static const String editProfile = '/editProfile';
   static const String home = '/home';
+  static const String threadHistory = '/threadHistory';
+  static const String threadDetail = '/threadDetail';
 }
