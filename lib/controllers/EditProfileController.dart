@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:univ_chat_gpt/app/Constants.dart';
-import 'package:univ_chat_gpt/services/userService.dart';
+import 'package:univ_chat_gpt/services/UserService.dart';
 
 import '../models/UserModel.dart';
 

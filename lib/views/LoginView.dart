@@ -17,7 +17,7 @@ class LoginView extends StatelessWidget {
         child: Scaffold(
       //resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: EdgeInsets.all(24.sp),
+        padding: EdgeInsets.symmetric(horizontal: 24.sp),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(

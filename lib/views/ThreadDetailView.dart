@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -18,42 +19,73 @@ class ThreadDetailView extends StatelessWidget {
         child: Scaffold(
       body: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         Expanded(
-          child: Stack(
-            children: [
-              controller.questions.isEmpty
-                  ? const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "You have no previous questions",
-                      ))
-                  : ListView.builder(
-                      controller: controller.scrollController,
-                      //physics: BouncingScrollPhysics(),      //if it bounces then it wont scroll to the endd initially
-                      itemCount: controller.questions.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          padding: const EdgeInsets.only(
-                              left: 14, right: 14, top: 10, bottom: 10),
-                          child: Align(
-                              alignment: (index.isEven
-                                  ? Alignment.topLeft
-                                  : Alignment.topRight),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: (index.isEven
-                                      ? thirdColor
-                                      : primaryColor),
-                                ),
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  controller.questions[index],
-                                  style: TextStyle(fontSize: 15.sp),
-                                ),
-                              )),
-                        );
-                      }),
-            ],
+          child: Obx(
+            () => Stack(
+              children: [
+                controller.questions.isEmpty
+                    ? const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "You have no previous questions",
+                        ))
+                    : ListView.builder(
+                        controller: controller.scrollController,
+                        //physics: BouncingScrollPhysics(),      //if it bounces then it wont scroll to the endd initially
+                        itemCount: controller.questions.length,
+                        itemBuilder: (context, index) {
+                          return Wrap(children: [
+                            //user question
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 14, right: 14, top: 10, bottom: 10),
+                              child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        bottomRight: Radius.circular(20),
+                                        bottomLeft: Radius.circular(20),
+                                      ),
+                                      color: thirdColor,
+                                    ),
+                                    padding: const EdgeInsets.all(16),
+                                    child: Text(
+                                      controller.questions[index]!.prompt!,
+                                      style: TextStyle(fontSize: 15.sp),
+                                    ),
+                                  )),
+                            ),
+                            //bot response
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 14, right: 14, top: 10, bottom: 10),
+                              child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                        ),
+                                        color: primaryColor,
+                                      ),
+                                      padding: const EdgeInsets.all(16),
+                                      child: AnimatedTextKit(
+                                        totalRepeatCount: 1,
+                                        animatedTexts: [
+                                          TypewriterAnimatedText(
+                                              controller.questions[index]!.tag!,
+                                              textStyle:
+                                                  TextStyle(fontSize: 15.sp)),
+                                        ],
+                                      ))),
+                            ),
+                          ]);
+                        }),
+              ],
+            ),
           ),
         ),
         Container(
@@ -64,13 +96,14 @@ class ThreadDetailView extends StatelessWidget {
           child: Row(
             children: <Widget>[
               15.w.horizontalSpace,
-              const Expanded(
+              Expanded(
                 child: TextField(
-                  style: TextStyle(fontSize: 19),
-                  //controller: messageController,
+                  style: TextStyle(fontSize: 19.sp),
+                  controller: controller.questionController.value,
                   decoration: InputDecoration(
                     hintText: "Ask a question...",
-                    hintStyle: TextStyle(color: Colors.black54, fontSize: 18),
+                    hintStyle:
+                        TextStyle(color: Colors.black54, fontSize: 18.sp),
                     border: InputBorder.none,
                   ),
                 ),
@@ -79,6 +112,7 @@ class ThreadDetailView extends StatelessWidget {
               FloatingActionButton(
                 mini: true,
                 onPressed: () async {
+                  controller.send();
                   // if(!messageController.text.isBlank){
                   //   SharedPreferences prefs = await SharedPreferences.getInstance();
                   //   model.newMessage =

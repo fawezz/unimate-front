@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:univ_chat_gpt/services/userService.dart';
+import 'package:univ_chat_gpt/services/UserService.dart';
 
 import '../models/UserModel.dart';
 

@@ -9,7 +9,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
-import 'package:univ_chat_gpt/services/userService.dart';
+import 'package:univ_chat_gpt/services/UserService.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController().obs;

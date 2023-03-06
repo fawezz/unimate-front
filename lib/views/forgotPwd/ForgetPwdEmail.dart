@@ -5,7 +5,6 @@ import 'package:univ_chat_gpt/controllers/ForgetPwdController.dart';
 import 'package:univ_chat_gpt/custom_widgets/InputField.dart';
 import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
 import 'package:univ_chat_gpt/app/Colors.dart' as color;
-import '../../controllers/ForgetPwdController.dart';
 
 class ForgetPwdEmail extends StatelessWidget {
   const ForgetPwdEmail({super.key});

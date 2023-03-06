@@ -104,7 +104,7 @@ class HomeView extends StatelessWidget {
                         size: 35.sp,
                         color: Colors.black,
                       ),
-                      onTap: null,
+                      onTap: () => Get.offAllNamed(NamedRoutes.login),
                     ),
                   ),
                 ],

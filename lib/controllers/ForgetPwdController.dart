@@ -5,7 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
-import 'package:univ_chat_gpt/services/userService.dart';
+import 'package:univ_chat_gpt/services/UserService.dart';
 
 class ForgetPwd extends GetxController {
   final emailController = TextEditingController().obs;
