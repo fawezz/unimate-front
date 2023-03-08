@@ -26,10 +26,17 @@ class UserService {
     return response;
   }
 
-  static Future<http.Response> postSignUp(
-      String fullName, String email, String pwd) async {
+  static Future<http.Response> postSignUp(String fullName, String email,
+      String pwd, String? role, int? level, String? speciality) async {
     Uri SignUpUri = Uri.parse(baseUrl + signUpUrl);
-    final data = {"fullname": fullName, "email": email, "pwd": pwd};
+    final data = {
+      "fullname": fullName,
+      "email": email,
+      "pwd": pwd,
+      "role": role,
+      "level": level,
+      "speciality": speciality
+    };
     String params = jsonEncode(data);
     http.Response response =
         await http.post(SignUpUri, body: params, headers: <String, String>{

@@ -24,6 +24,8 @@ class ThreadDetailController extends GetxController {
       Map<String, dynamic> body = jsonDecode(response.body);
       Question q = Question.fromJson(body["thread"]);
       questions.add(q);
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
       questionController.value.clear();
     }
   }
@@ -35,7 +37,7 @@ class ThreadDetailController extends GetxController {
     questions.add(Question(
         prompt: "where is block A?",
         completion: "go straight",
-        tag: "blocks andd buildings"));
+        tag: "blocks and buildings"));
 
     print(questions.length);
     /*isLoading.value = true;

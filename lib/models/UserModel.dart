@@ -2,29 +2,35 @@ class User {
   String? id;
   String? fullname;
   String? email;
-  String? pwd;
   String? pic;
   bool? isVerified;
-  int? otp;
+  String? role;
+  bool? isBlocked;
+  int? level;
+  String? speciality;
 
   User({
     id,
     fullname,
     email,
-    pwd,
     pic,
+    role,
+    level,
+    speciality,
+    isBlocked,
     isVerified,
-    otp,
   });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     fullname = json['fullname'];
     email = json['email'];
-    pwd = json['pwd'];
     pic = json['pic'];
     isVerified = json['isVerified'];
-    otp = json['otp'];
+    role = json['role'];
+    isBlocked = json['isBlocked'];
+    level = json['level'];
+    speciality = json['speciality'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,15 +38,17 @@ class User {
     data['_id'] = id;
     data['fullname'] = fullname;
     data['email'] = email;
-    data['pwd'] = pwd;
     data['pic'] = pic;
     data['isVerified'] = isVerified;
-    data['otp'] = otp;
+    data['role'] = role;
+    data['isBlocked'] = isBlocked;
+    data['level'] = level;
+    data['speciality'] = speciality;
     return data;
   }
 
   @override
   String toString() {
-    return 'User{Id: $id, fullname: $fullname, email: $email, pwd: $pwd, pic: $pic, isVerified: $isVerified, otp: $otp}';
+    return 'User{Id: $id, fullname: $fullname, email: $email, role: $role, pic: $pic, isVerified: $isVerified, speciality: $speciality}';
   }
 }

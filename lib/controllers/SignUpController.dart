@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -10,14 +11,39 @@ class SignUpController extends GetxController {
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
   final password2Controller = TextEditingController().obs;
-
+  RxInt levelValue = 1.obs;
+  RxString specialityValue = 'SIM'.obs;
+  RxString roleValue = "Guest".obs;
+  final specialityOptions = <String>[
+    'SIM',
+    'TWIN ',
+    'SLEAM ',
+    'NIDS',
+    'SE',
+    'ArcTIC'
+  ];
+  final roleOptions = <String>["Guest", "Student", "Teacher"];
+  final levelOptions = <int>[1, 2, 3, 4, 5];
   final bool isEmailValid = false;
 
   Future<void> signUp() async {
     if (validateFields()) {
       EasyLoading.show(status: 'loading...');
-      final response = await UserService.postSignUp(nameController.value.text,
-          emailController.value.text, passwordController.value.text);
+      int? lvl = levelValue.value;
+      String? speciality = specialityValue.value;
+      if (roleValue.value != roleOptions[1]) {
+        lvl = speciality = null;
+      }
+      if ((lvl ?? 0) < 3) {
+        speciality = null;
+      }
+      final response = await UserService.postSignUp(
+          nameController.value.text,
+          emailController.value.text,
+          passwordController.value.text,
+          roleValue.value,
+          lvl,
+          speciality);
       EasyLoading.dismiss();
 
       Map<String, dynamic> body = jsonDecode(response.body);
@@ -97,6 +123,27 @@ class SignUpController extends GetxController {
     } else {
       return null;
     }
+  }
+
+  List<DropdownMenuItem<String>> get getRoleDropDownItems {
+    List<DropdownMenuItem<String>> menuItems = roleOptions
+        .map((String e) => DropdownMenuItem(child: Text(e), value: e))
+        .toList();
+    return menuItems;
+  }
+
+  List<DropdownMenuItem<int>> get getLevelDropDownItems {
+    List<DropdownMenuItem<int>> menuItems = levelOptions
+        .map((int e) => DropdownMenuItem(child: Text("$e"), value: e))
+        .toList();
+    return menuItems;
+  }
+
+  List<DropdownMenuItem<String>> get getSpecialityDropDownItems {
+    List<DropdownMenuItem<String>> menuItems = specialityOptions
+        .map((String e) => DropdownMenuItem(child: Text(e), value: e))
+        .toList();
+    return menuItems;
   }
 
   @override

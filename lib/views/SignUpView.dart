@@ -65,6 +65,78 @@ class SignUpView extends StatelessWidget {
                 suffix: true,
                 validatorFunction: controller.validatePasswordsMatching,
               ),
+              16.h.verticalSpace,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
+                  child: Text(
+                    "Role",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              Obx(() => DropdownButton<String>(
+                  hint: Text("Role"),
+                  value: controller.roleValue.value,
+                  items: controller.getRoleDropDownItems,
+                  onChanged: (String? value) {
+                    controller.roleValue.value = value!;
+                  })),
+              Obx(() => controller.roleValue.value == controller.roleOptions[1]
+                  ? Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
+                            child: Text(
+                              "Level",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Obx(() => DropdownButton<int>(
+                            value: controller.levelValue.value,
+                            items: controller.getLevelDropDownItems,
+                            onChanged: (int? value) {
+                              controller.levelValue.value = value!;
+                            })),
+                      ],
+                    )
+                  : Container()),
+              Obx(() => controller.levelValue.value > 2 &&
+                      controller.roleValue.value == controller.roleOptions[1]
+                  ? Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
+                            child: Text(
+                              "Speciality",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Obx(() => DropdownButton(
+                            value: controller.specialityValue.value,
+                            items: controller.getSpecialityDropDownItems,
+                            onChanged: (String? value) {
+                              controller.specialityValue.value = value!;
+                            })),
+                      ],
+                    )
+                  : Container()),
               0.05.sh.verticalSpace,
               RedButton(
                   text: "Register",
