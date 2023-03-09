@@ -7,11 +7,11 @@ import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
 import '../controllers/SignUpController.dart';
 
 class SignUpView extends StatelessWidget {
-  const SignUpView({Key? key}) : super(key: key);
+  SignUpView({Key? key}) : super(key: key);
+  SignUpController controller = Get.put(SignUpController());
 
   @override
   Widget build(BuildContext context) {
-    SignUpController controller = Get.put(SignUpController());
     return SafeArea(
         child: Scaffold(
       //resizeToAvoidBottomInset: false,

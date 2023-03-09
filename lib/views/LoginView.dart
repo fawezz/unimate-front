@@ -8,11 +8,11 @@ import 'package:univ_chat_gpt/custom_widgets/InputField.dart';
 import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+  LoginView({Key? key}) : super(key: key);
+  LoginController controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
-    LoginController controller = Get.put(LoginController());
     return SafeArea(
         child: Scaffold(
       //resizeToAvoidBottomInset: false,

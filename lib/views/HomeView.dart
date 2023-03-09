@@ -30,6 +30,7 @@ class HomeView extends StatelessWidget {
                   controller.isLoading.value
                       ? Container()
                       : UserAccountsDrawerHeader(
+                        decoration: BoxDecoration(color: primaryColor),
                           accountName: Text(
                             controller.fullName!,
                             style: const TextStyle(
@@ -77,7 +78,7 @@ class HomeView extends StatelessWidget {
                       size: 35.sp,
                       color: Colors.black,
                     ),
-                    onTap: null,
+                    onTap: () => Get.toNamed(NamedRoutes.settings),
                   ),
                   ListTile(
                     title: Text(
@@ -104,7 +105,7 @@ class HomeView extends StatelessWidget {
                         size: 35.sp,
                         color: Colors.black,
                       ),
-                      onTap: () => Get.offAllNamed(NamedRoutes.login),
+                      onTap: () => controller.logout(),
                     ),
                   ),
                 ],

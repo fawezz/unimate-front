@@ -8,4 +8,5 @@ class NamedRoutes {
   static const String home = '/home';
   static const String threadHistory = '/threadHistory';
   static const String threadDetail = '/threadDetail';
+  static const String settings = '/settings';
 }

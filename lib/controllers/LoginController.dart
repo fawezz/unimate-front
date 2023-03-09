@@ -33,7 +33,7 @@ class LoginController extends GetxController {
             prefs.setString("token", body["token"]);
             await Future.delayed(const Duration(milliseconds: 700));
             EasyLoading.dismiss();
-            Fluttertoast.showToast(
+            /*Fluttertoast.showToast(
                 msg: body["message"],
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
@@ -41,6 +41,7 @@ class LoginController extends GetxController {
                 backgroundColor: primaryColor.withOpacity(0.8),
                 textColor: Colors.white,
                 fontSize: 14.0);
+                */
             Get.offAllNamed(NamedRoutes.home);
           }
           break;
