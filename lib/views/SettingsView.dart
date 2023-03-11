@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:univ_chat_gpt/app/Themes.dart';
 import 'package:univ_chat_gpt/controllers/SettingsController.dart';
 
 class SettingsView extends StatelessWidget {
@@ -13,6 +14,13 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryIconTheme.color),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text("Settings", style: Theme.of(context).appBarTheme.titleTextStyle,),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(children: [
@@ -56,6 +64,9 @@ class SettingsView extends StatelessWidget {
                 )),
             title: Text("System"),
           ),
+          //Text(Themes.currentThemeMode.value == ThemeMode.dark ? "darkmode" : "lightmode",
+          //style: TextStyle(color: Get.theme.primaryColor),),
+          Obx(() =>  Text(Themes.isDark.isTrue ? "darkmode" : "lightmode")),
         ]),
       ),
     ));

@@ -20,10 +20,11 @@ class EditProfileView extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryIconTheme.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text("Edit Profile"),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -49,19 +50,19 @@ class EditProfileView extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () => controller.showAddPictureBottomSheet(),
                     child: Container(
-                      height: 0.12.sw,
-                      width: 0.12.sw,
+                      height: 0.1.sw,
+                      width: 0.1.sw,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Get.theme.canvasColor,
                         borderRadius: BorderRadius.circular(50),
                       ),
                       padding: const EdgeInsets.all(2),
                       child: CircleAvatar(
-                        radius: 0.6.sw,
-                        backgroundColor: HexColor("#E9E9E9"),
+                        backgroundColor: Colors.grey[300],
                         child: Icon(
-                          Icons.camera_enhance_outlined,
+                          Icons.camera_enhance,
                           size: 30.sp,
+                          color: Colors.black,
                         ),
                       ),
                     ),

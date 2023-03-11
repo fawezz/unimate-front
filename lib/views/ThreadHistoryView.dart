@@ -15,10 +15,10 @@ class ThreadHistoryView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('History'),
+          title: Text('History', style: Theme.of(context).appBarTheme.titleTextStyle,),
         ),
-        floatingActionButton: const FloatingActionButton.small(
-            onPressed: null, child: Icon(Icons.add)),
+        floatingActionButton: FloatingActionButton.small(
+            onPressed: null, child: Icon(Icons.add, color: Colors.white70,)),
         body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Padding(
             padding: EdgeInsets.only(top: 18.h),
@@ -108,8 +108,7 @@ class ThreadHistoryView extends StatelessWidget {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              color: textColorLight
-                                                  .withOpacity(0.5)),
+                                              color: Colors.grey[400]),
                                         )
                                       ]),
                                 ),
@@ -117,7 +116,7 @@ class ThreadHistoryView extends StatelessWidget {
                                 Text(
                                   "11 May",
                                   style: TextStyle(
-                                      color: textColorLight.withOpacity(0.4)),
+                                      color: Colors.grey[400]),
                                 )
                               ],
                             ),

@@ -6,21 +6,25 @@ import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/controllers/HomeController.dart';
 import 'package:univ_chat_gpt/views/ThreadDetailView.dart';
 
+import '../app/Themes.dart';
+
 class HomeView extends StatelessWidget {
   HomeView({super.key});
   final HomeController controller = Get.put(HomeController());
+  var drawerIconColor = Get.theme.primaryIconTheme.color;
+
+  final drawerIconSize = 28.sp;
+  final drawerTextSize = 18.sp;
+  //var drawerIconColor = Theme.of(Get.context!).primaryIconTheme.color;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              title: const Text(
+              toolbarTextStyle: Get.theme.appBarTheme.toolbarTextStyle,
+              title: Text(
                 "New Thread",
-                style: TextStyle(
-                    color: textColorLight, fontWeight: FontWeight.bold),
               ),
-              backgroundColor: appBarColorLight,
-              iconTheme: const IconThemeData(color: textColorLight),
               elevation: 0,
             ),
             drawer: Drawer(
@@ -30,7 +34,7 @@ class HomeView extends StatelessWidget {
                   controller.isLoading.value
                       ? Container()
                       : UserAccountsDrawerHeader(
-                        decoration: BoxDecoration(color: primaryColor),
+                          decoration: BoxDecoration(color: primaryColor),
                           accountName: Text(
                             controller.fullName!,
                             style: const TextStyle(
@@ -47,48 +51,56 @@ class HomeView extends StatelessWidget {
                   ListTile(
                     title: Text(
                       'Thread History',
-                      style: TextStyle(fontSize: 20.sp),
+                      style: TextStyle(fontSize: drawerTextSize),
                     ),
-                    leading: Icon(
-                      Icons.message_outlined,
-                      size: 35.sp,
-                      color: Colors.black,
+                    leading: IconTheme(
+                      data: Theme.of(context).primaryIconTheme,
+                      child: Icon(
+                        Icons.message_outlined,
+                        size: drawerIconSize,
+                      ),
                     ),
                     onTap: () => Get.toNamed(NamedRoutes.threadHistory),
                   ),
                   ListTile(
                     title: Text(
                       'Edit Profile',
-                      style: TextStyle(fontSize: 20.sp),
+                      style: TextStyle(fontSize: drawerTextSize),
                     ),
-                    leading: Icon(
-                      Icons.person_outline,
-                      size: 35.sp,
-                      color: Colors.black,
+                    leading: IconTheme(
+                      data: Theme.of(context).primaryIconTheme,
+                      child: Icon(
+                        Icons.person_outline,
+                        size: drawerIconSize,
+                      ),
                     ),
                     onTap: () => Get.toNamed(NamedRoutes.editProfile),
                   ),
                   ListTile(
                     title: Text(
                       'Settings',
-                      style: TextStyle(fontSize: 20.sp),
+                      style: TextStyle(fontSize: drawerTextSize),
                     ),
-                    leading: Icon(
-                      Icons.settings_outlined,
-                      size: 35.sp,
-                      color: Colors.black,
+                    leading: IconTheme(
+                      data: Theme.of(context).primaryIconTheme,
+                      child: Icon(
+                        Icons.settings_outlined,
+                        size: drawerIconSize,
+                      ),
                     ),
                     onTap: () => Get.toNamed(NamedRoutes.settings),
                   ),
                   ListTile(
                     title: Text(
                       'About Us',
-                      style: TextStyle(fontSize: 20.sp),
+                      style: TextStyle(fontSize: drawerTextSize),
                     ),
-                    leading: Icon(
-                      Icons.info_outline,
-                      size: 35.sp,
-                      color: Colors.black,
+                    leading: IconTheme(
+                      data: Theme.of(context).primaryIconTheme,
+                      child: Icon(
+                        Icons.info_outline,
+                        size: drawerIconSize,
+                      ),
                     ),
                     onTap: null,
                   ),
@@ -98,12 +110,14 @@ class HomeView extends StatelessWidget {
                     child: ListTile(
                       title: Text(
                         'Logout',
-                        style: TextStyle(fontSize: 20.sp),
+                        style: TextStyle(fontSize: drawerTextSize),
                       ),
-                      leading: Icon(
-                        Icons.logout,
-                        size: 35.sp,
-                        color: Colors.black,
+                      leading: IconTheme(
+                        data: Theme.of(context).primaryIconTheme,
+                        child: Icon(
+                          Icons.logout,
+                          size: drawerIconSize,
+                        ),
                       ),
                       onTap: () => controller.logout(),
                     ),

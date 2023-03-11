@@ -1,29 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 
 class Themes {
-  static void changeTheme(String? theme) {
+  static RxBool isDark = false.obs;
+  static Rx<ThemeMode> currentThemeMode = (ThemeMode.system).obs;
+
+  static Future<void> saveTheme(String? theme) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("theme", theme!);
+    setTheme(theme);
+  }
+
+  static void setTheme(String? theme) {
     switch (theme) {
       case "LIGHT":
         {
-          Get.changeTheme(ThemeData.light());
+          //Get.changeTheme(Themes.lightTheme);
+          currentThemeMode.value = ThemeMode.light;
+          isDark.value = false;
         }
         break;
       case "DARK":
         {
-          Get.changeTheme(ThemeData.dark());
+          //Get.changeTheme(Themes.darkTheme);
+          currentThemeMode.value = ThemeMode.dark;
+          isDark.value = true;
         }
         break;
       default:
         {
-          Get.changeTheme(
-            SchedulerBinding.instance?.window.platformBrightness ==
-                    Brightness.light
-                ? ThemeData.light()
-                : ThemeData.dark(),
-          );
+          currentThemeMode.value = ThemeMode.system;
+          isDark.value = SchedulerBinding.instance?.window.platformBrightness ==
+                  Brightness.light
+              ? false
+              : true;
         }
         break;
     }
@@ -31,20 +46,49 @@ class Themes {
 
   static ThemeData get lightTheme {
     return ThemeData(
-        primarySwatch: Colors.red,
-        scaffoldBackgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: primaryColor));
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        backgroundColor: Colors.white,
+        titleTextStyle: TextStyle(
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20.sp),
+        actionsIconTheme: IconThemeData(color: textColorLight),
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: primaryColor),
+      primaryColor: primaryColor,
+      colorScheme: ColorScheme.light(tertiary: Colors.grey[200]),
+      scaffoldBackgroundColor: Colors.white,
+      iconTheme: IconThemeData(color: primaryColor),
+      primaryIconTheme: IconThemeData(
+        color: Colors.black,
+      ),
+      textSelectionTheme: TextSelectionThemeData(cursorColor: primaryColor),
+    );
   }
 
   static ThemeData get darkTheme {
     return ThemeData(
-      canvasColor: secondaryColor,
-      colorScheme: ColorScheme.dark(
-        primary: primaryColor,
-        secondary: primaryColor
+      brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.grey[900],
+        titleTextStyle: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.sp),
+        actionsIconTheme: IconThemeData(color: textColorDark),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
-      scaffoldBackgroundColor: secondaryColor,
-      
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: primaryColor,),
+      primaryColor: primaryColor,
+      colorScheme: ColorScheme.dark(tertiary: Colors.grey[700]),
+      iconTheme: IconThemeData(color: primaryColor),
+      primaryIconTheme: const IconThemeData(
+        color: Colors.white,
+      ),
+      textSelectionTheme: TextSelectionThemeData(cursorColor: primaryColor),
     );
   }
 }

@@ -88,52 +88,58 @@ class ThreadDetailView extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
-          height: 60,
-          width: double.infinity,
-          color: Colors.white,
-          child: Row(
-            children: <Widget>[
-              15.w.horizontalSpace,
-              Expanded(
-                child: TextField(
-                  style: TextStyle(fontSize: 19.sp),
-                  controller: controller.questionController.value,
-                  decoration: InputDecoration(
-                    hintText: "Ask a question...",
-                    hintStyle:
-                        TextStyle(color: Colors.black54, fontSize: 18.sp),
-                    border: InputBorder.none,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
+            height: 55,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+            child: Row(
+              children: <Widget>[
+                15.w.horizontalSpace,
+                Expanded(
+                  child: TextField(
+                    style: TextStyle(fontSize: 19.sp),
+                    controller: controller.questionController.value,
+                    decoration: InputDecoration(
+                      hintText: "Ask a question...",
+                      hintStyle:
+                          TextStyle(color: Colors.black54, fontSize: 18.sp),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
-              ),
-              15.w.horizontalSpace,
-              FloatingActionButton(
-                mini: true,
-                onPressed: () async {
-                  controller.send();
-                  // if(!messageController.text.isBlank){
-                  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-                  //   model.newMessage =
-                  //       ChatMessage(senderId: prefs.getInt("idUser"), senderName: prefs.getString("firstName"),
-                  //           message: messageController.text, description: Get.arguments["description"],
-                  //           participantsIds: model.currentConv.participantsIds);
-                  //   model.sendMessage();
-                  //   messageController.clear();
-                  //   scrollController.jumpTo(scrollController.position.maxScrollExtent);
-                  // }
-                  // //messageController.value
-                },
-                backgroundColor: primaryColor,
-                elevation: 0,
-                child: const Icon(
-                  Icons.send,
-                  color: Colors.white,
-                  size: 20,
+                15.w.horizontalSpace,
+                FloatingActionButton(
+                  mini: true,
+                  onPressed: () async {
+                    controller.send();
+                    // if(!messageController.text.isBlank){
+                    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+                    //   model.newMessage =
+                    //       ChatMessage(senderId: prefs.getInt("idUser"), senderName: prefs.getString("firstName"),
+                    //           message: messageController.text, description: Get.arguments["description"],
+                    //           participantsIds: model.currentConv.participantsIds);
+                    //   model.sendMessage();
+                    //   messageController.clear();
+                    //   scrollController.jumpTo(scrollController.position.maxScrollExtent);
+                    // }
+                    // //messageController.value
+                  },
+                  backgroundColor: primaryColor,
+                  elevation: 0,
+                  child: const Icon(
+                    Icons.send,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         )
       ]),
