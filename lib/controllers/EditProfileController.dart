@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:http/src/response.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -133,11 +131,11 @@ class EditProfileController extends GetxController {
 
 // SELECT IMAGE
 
-  void selectImage(String _source) async {
-    final ImagePicker _picker = ImagePicker();
+  void selectImage(String source) async {
+    final ImagePicker picker = ImagePicker();
     XFile? selectedImage;
-    selectedImage = await _picker.pickImage(
-        source: _source == "CAMERA" ? ImageSource.camera : ImageSource.gallery);
+    selectedImage = await picker.pickImage(
+        source: source == "CAMERA" ? ImageSource.camera : ImageSource.gallery);
     if (selectedImage == null) {
       return;
     }

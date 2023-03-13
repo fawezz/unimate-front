@@ -69,7 +69,7 @@ class ForgetPwd extends GetxController {
   Future<void> verifyOTP() async {
     if (otpCollectorAndParser() != -1) {
       EasyLoading.show(status: 'loading...');
-      print(email + "from verif orp");
+      print("$email from verif orp");
       final response =
           await UserService.postVerifyOTP(email, otpCollectorAndParser());
       EasyLoading.dismiss();

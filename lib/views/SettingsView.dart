@@ -14,12 +14,16 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
+      appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryIconTheme.color),
+          icon: Icon(Icons.arrow_back,
+              color: Theme.of(context).primaryIconTheme.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Settings", style: Theme.of(context).appBarTheme.titleTextStyle,),
+        title: Text(
+          "Settings",
+          style: Theme.of(context).appBarTheme.titleTextStyle,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -64,9 +68,6 @@ class SettingsView extends StatelessWidget {
                 )),
             title: Text("System"),
           ),
-          //Text(Themes.currentThemeMode.value == ThemeMode.dark ? "darkmode" : "lightmode",
-          //style: TextStyle(color: Get.theme.primaryColor),),
-          Obx(() =>  Text(Themes.isDark.isTrue ? "darkmode" : "lightmode")),
         ]),
       ),
     ));

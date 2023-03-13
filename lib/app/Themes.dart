@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 
@@ -35,7 +36,7 @@ class Themes {
       default:
         {
           currentThemeMode.value = ThemeMode.system;
-          isDark.value = SchedulerBinding.instance?.window.platformBrightness ==
+          isDark.value = SchedulerBinding.instance.window.platformBrightness ==
                   Brightness.light
               ? false
               : true;
@@ -52,8 +53,8 @@ class Themes {
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(
             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20.sp),
-        actionsIconTheme: IconThemeData(color: textColorLight),
-        iconTheme: IconThemeData(color: Colors.black),
+        actionsIconTheme: const IconThemeData(color: textColorLight),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: primaryColor),
@@ -61,7 +62,7 @@ class Themes {
       colorScheme: ColorScheme.light(tertiary: Colors.grey[200]),
       scaffoldBackgroundColor: Colors.white,
       iconTheme: IconThemeData(color: primaryColor),
-      primaryIconTheme: IconThemeData(
+      primaryIconTheme: const IconThemeData(
         color: Colors.black,
       ),
       textSelectionTheme: TextSelectionThemeData(cursorColor: primaryColor),
@@ -74,16 +75,16 @@ class Themes {
       appBarTheme: AppBarTheme(
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Colors.grey[850],
         titleTextStyle: TextStyle(
             color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.sp),
-        actionsIconTheme: IconThemeData(color: textColorDark),
-        iconTheme: IconThemeData(color: Colors.white),
+        actionsIconTheme: const IconThemeData(color: textColorDark),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: primaryColor,),
       primaryColor: primaryColor,
-      colorScheme: ColorScheme.dark(tertiary: Colors.grey[700]),
+      colorScheme: ColorScheme.dark(tertiary: HexColor("B2B3B7").withOpacity(0.15)),
       iconTheme: IconThemeData(color: primaryColor),
       primaryIconTheme: const IconThemeData(
         color: Colors.white,

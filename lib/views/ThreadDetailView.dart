@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
@@ -18,6 +19,11 @@ class ThreadDetailView extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       body: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        GifImage(
+          controller: controller.gifController,
+          image: AssetImage("assets/gifs/wavingBGIFV2.gif"),
+        ),
+        0.02.sh.verticalSpace,
         Expanded(
           child: Obx(
             () => Stack(
@@ -29,6 +35,7 @@ class ThreadDetailView extends StatelessWidget {
                           "You have no previous questions",
                         ))
                     : ListView.builder(
+                        padding: EdgeInsets.only(top: 50),
                         controller: controller.scrollController,
                         //physics: BouncingScrollPhysics(),      //if it bounces then it wont scroll to the endd initially
                         itemCount: controller.questions.length,
@@ -52,38 +59,70 @@ class ThreadDetailView extends StatelessWidget {
                                     padding: const EdgeInsets.all(16),
                                     child: Text(
                                       controller.questions[index]!.prompt!,
-                                      style: TextStyle(fontSize: 15.sp),
+                                      style: TextStyle(
+                                          fontSize: 18.sp, color: Colors.white),
                                     ),
                                   )),
                             ),
                             //bot response
-                            Container(
-                              padding: const EdgeInsets.only(
-                                  left: 14, right: 14, top: 10, bottom: 10),
-                              child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20),
-                                        ),
-                                        color: primaryColor,
-                                      ),
-                                      padding: const EdgeInsets.all(16),
-                                      child: AnimatedTextKit(
-                                        totalRepeatCount: 1,
-                                        animatedTexts: [
-                                          TypewriterAnimatedText(
-                                              controller.questions[index]!.tag!,
-                                              textStyle:
-                                                  TextStyle(fontSize: 15.sp)),
-                                        ],
-                                      ))),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 14, right: 14, top: 10, bottom: 10),
+                                  child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Container(
+                                          constraints:
+                                              BoxConstraints(maxWidth: 0.8.sw),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topRight: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                              bottomLeft: Radius.circular(20),
+                                            ),
+                                            color: primaryColor,
+                                          ),
+                                          padding: const EdgeInsets.all(16),
+                                          child: AnimatedTextKit(
+                                            totalRepeatCount: 1,
+                                            animatedTexts: [
+                                              TypewriterAnimatedText(
+                                                  controller.questions[index]!
+                                                      .completion!,
+                                                  textStyle: TextStyle(
+                                                      fontSize: 18.sp,
+                                                      color: Colors.white)),
+                                            ],
+                                          ))),
+                                ),
+                                IconButton(
+                                    onPressed: null,
+                                    icon: Icon(Icons.volume_up))
+                              ],
                             ),
                           ]);
                         }),
+                Positioned(
+                  top: -1,
+                  width: Get.width,
+                  height: 120,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Theme.of(context).scaffoldBackgroundColor,
+                          Theme.of(context)
+                              .scaffoldBackgroundColor
+                              .withOpacity(0.0),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -107,16 +146,17 @@ class ThreadDetailView extends StatelessWidget {
                     controller: controller.questionController.value,
                     decoration: InputDecoration(
                       hintText: "Ask a question...",
-                      hintStyle:
-                          TextStyle(color: Colors.black54, fontSize: 18.sp),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 18.sp),
                       border: InputBorder.none,
                     ),
+                    maxLines: 1,
                   ),
                 ),
                 15.w.horizontalSpace,
                 FloatingActionButton(
                   mini: true,
                   onPressed: () async {
+                    //controller.send();
                     controller.send();
                     // if(!messageController.text.isBlank){
                     //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -133,7 +173,7 @@ class ThreadDetailView extends StatelessWidget {
                   backgroundColor: primaryColor,
                   elevation: 0,
                   child: const Icon(
-                    Icons.send,
+                    Icons.send_outlined,
                     color: Colors.white,
                     size: 20,
                   ),
