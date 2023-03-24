@@ -1,12 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gif/flutter_gif.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/models/QuestionModel.dart';
+import 'package:univ_chat_gpt/services/TextToSpeechService.dart';
 import 'package:univ_chat_gpt/services/ThreadService.dart';
 import 'package:http/http.dart' as http;
+
+import '../app/Colors.dart';
 
 class ThreadDetailController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -44,6 +49,22 @@ class ThreadDetailController extends GetxController
     gifController.animateTo(112.0, duration: Duration(milliseconds: 3000));
   }
 
+  void readText(String text) async {
+    await TextToSpeechService.speak(text);
+  }
+
+  void copy(String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    Fluttertoast.showToast(
+                msg: "Copied to Clipboard",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: primaryColor.withOpacity(0.6),
+                textColor: Colors.white,
+                fontSize: 14.0);
+  }
+
   @override
   Future<void> onInit() async {
     gifController = FlutterGifController(vsync: this);
@@ -55,11 +76,14 @@ class ThreadDetailController extends GetxController
       //   period: const Duration(milliseconds: 1000),
       // );
     });
-    // questions.add(Question(
-    //     prompt: "hello how are you ?", completion: "i am fine", tag: "test"));
+    questions.add(Question(
+        prompt: "hello how are you ?",
+        completion: "i am fine, how are you?",
+        tag: "test"));
     questions.add(Question(
         prompt: "where is block A?",
-        completion: "go straight",
+        completion:
+            "first face the main entrance, then walk straight ahead until you reach the intersection.",
         tag: "blocks and buildings"));
 
     print(questions.length);

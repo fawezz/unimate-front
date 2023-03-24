@@ -14,6 +14,7 @@ import 'package:univ_chat_gpt/views/forgotPwd/ForgetPwdEmail.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
 import 'app/Themes.dart';
+import 'services/TextToSpeechService.dart';
 import 'views/forgotPwd/ForgetPwdOTPView.dart';
 
 Future<void> main() async {
@@ -21,6 +22,7 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString("token");
   String? theme = prefs.getString("theme");
+  TextToSpeechService.initTTS();
   runApp(MyApp(
     token: token,
   ));

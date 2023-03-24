@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -72,34 +73,63 @@ class ThreadDetailView extends StatelessWidget {
                                       left: 14, right: 14, top: 10, bottom: 10),
                                   child: Align(
                                       alignment: Alignment.topLeft,
-                                      child: Container(
-                                          constraints:
-                                              BoxConstraints(maxWidth: 0.8.sw),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topRight: Radius.circular(20),
-                                              bottomRight: Radius.circular(20),
-                                              bottomLeft: Radius.circular(20),
+                                      child: GestureDetector(
+                                        onLongPress: () {
+                                          controller.copy(controller
+                                              .questions[index]!.completion!);
+                                        },
+                                        child: Container(
+                                            constraints: BoxConstraints(
+                                                maxWidth: 0.8.sw),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topRight: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20),
+                                                bottomLeft: Radius.circular(20),
+                                              ),
+                                              color: primaryColor,
                                             ),
-                                            color: primaryColor,
-                                          ),
-                                          padding: const EdgeInsets.all(16),
-                                          child: AnimatedTextKit(
-                                            totalRepeatCount: 1,
-                                            animatedTexts: [
-                                              TypewriterAnimatedText(
-                                                  controller.questions[index]!
-                                                      .completion!,
-                                                  textStyle: TextStyle(
-                                                      fontSize: 18.sp,
-                                                      color: Colors.white)),
-                                            ],
-                                          ))),
+                                            padding: const EdgeInsets.all(16),
+                                            child: index !=
+                                                    (controller
+                                                            .questions.length -
+                                                        1)
+                                                ? Text(
+                                                    controller.questions[index]!
+                                                        .completion!,
+                                                    style: TextStyle(
+                                                        fontSize: 18.sp,
+                                                        color: Colors.white))
+                                                : AnimatedTextKit(
+                                                    totalRepeatCount: 1,
+                                                    animatedTexts: [
+                                                      TypewriterAnimatedText(
+                                                          controller
+                                                              .questions[index]!
+                                                              .completion!,
+                                                          textStyle: TextStyle(
+                                                              fontSize: 18.sp,
+                                                              color: Colors
+                                                                  .white)),
+                                                    ],
+                                                  )),
+                                      )),
                                 ),
                                 IconButton(
-                                    onPressed: null,
-                                    icon: Icon(Icons.volume_up))
+                                    color: Colors.white,
+                                    onPressed: () => controller.readText(
+                                        controller
+                                            .questions[index]!.completion!),
+                                    icon: IconTheme(
+                                        data: Theme.of(context).iconTheme,
+                                        child: Icon(
+                                          Icons.volume_up,
+                                          color: Theme.of(context)
+                                              .primaryIconTheme
+                                              .color,
+                                        )))
                               ],
                             ),
                           ]);
@@ -155,20 +185,8 @@ class ThreadDetailView extends StatelessWidget {
                 15.w.horizontalSpace,
                 FloatingActionButton(
                   mini: true,
-                  onPressed: () async {
-                    //controller.send();
+                  onPressed: () {
                     controller.send();
-                    // if(!messageController.text.isBlank){
-                    //   SharedPreferences prefs = await SharedPreferences.getInstance();
-                    //   model.newMessage =
-                    //       ChatMessage(senderId: prefs.getInt("idUser"), senderName: prefs.getString("firstName"),
-                    //           message: messageController.text, description: Get.arguments["description"],
-                    //           participantsIds: model.currentConv.participantsIds);
-                    //   model.sendMessage();
-                    //   messageController.clear();
-                    //   scrollController.jumpTo(scrollController.position.maxScrollExtent);
-                    // }
-                    // //messageController.value
                   },
                   backgroundColor: primaryColor,
                   elevation: 0,
