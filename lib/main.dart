@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
+import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/views/EditProfileView.dart';
 import 'package:univ_chat_gpt/views/HomeView.dart';
 import 'package:univ_chat_gpt/views/SettingsView.dart';
@@ -23,6 +24,7 @@ Future<void> main() async {
   String? token = prefs.getString("token");
   String? theme = prefs.getString("theme");
   TextToSpeechService.initTTS();
+  SpeechToTextService.initSpeech();
   runApp(MyApp(
     token: token,
   ));
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
               theme: Themes.lightTheme,
               darkTheme: Themes.darkTheme,
               themeMode: Themes.currentThemeMode.value,
-              home: token == null ? LoginView() : HomeView(),
+              home:  token == null ? LoginView() : HomeView(),
               getPages: [
                 GetPage(name: NamedRoutes.signUp, page: () => SignUpView()),
                 GetPage(name: NamedRoutes.login, page: () => LoginView()),

@@ -60,6 +60,12 @@
     <key>NSPhotoLibraryUsageDescription</key>
     <string>photos</string>
 
+	<key>NSSpeechRecognitionUsageDescription</key>
+    <string>recognize and display speech input</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+    <string>detect speech input</string>
+
 	
 </dict>
 </plist>

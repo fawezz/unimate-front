@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gif/flutter_gif.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/controllers/ThreadDetailController.dart';
+import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 
 class ThreadDetailView extends StatelessWidget {
   ThreadDetailView({
@@ -38,7 +40,8 @@ class ThreadDetailView extends StatelessWidget {
                     : ListView.builder(
                         padding: EdgeInsets.only(top: 50),
                         controller: controller.scrollController,
-                        //physics: BouncingScrollPhysics(),      //if it bounces then it wont scroll to the endd initially
+                        physics:
+                            const BouncingScrollPhysics(), //if it bounces then it wont scroll to the endd initially
                         itemCount: controller.questions.length,
                         itemBuilder: (context, index) {
                           return Wrap(children: [
@@ -80,7 +83,7 @@ class ThreadDetailView extends StatelessWidget {
                                         },
                                         child: Container(
                                             constraints: BoxConstraints(
-                                                maxWidth: 0.8.sw),
+                                                maxWidth: 0.75.sw),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   const BorderRadius.only(
@@ -157,11 +160,34 @@ class ThreadDetailView extends StatelessWidget {
             ),
           ),
         ),
+        Obx(
+          () => SpeechToTextService.isListening.isTrue
+              ? AvatarGlow(
+                  animate: true,
+                  glowColor: primaryColor,
+                  endRadius: 60,
+                  repeat: true,
+                  duration: const Duration(seconds: 3),
+                  repeatPauseDuration: const Duration(microseconds: 100),
+                  child: FloatingActionButton(
+                    mini: false,
+                    onPressed: null,
+                    backgroundColor: thirdColor,
+                    elevation: 0,
+                    child: Icon(
+                      Icons.mic_none,
+                      color: primaryColor,
+                      size: 20,
+                    ),
+                  ),
+                )
+              : Container(),
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
             padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
-            height: 55,
+            height: 65.h,
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(40),
@@ -169,16 +195,32 @@ class ThreadDetailView extends StatelessWidget {
             ),
             child: Row(
               children: <Widget>[
+                FloatingActionButton(
+                  mini: true,
+                  onPressed: () {
+                    controller.listenToSpeech();
+                  },
+                  backgroundColor: thirdColor,
+                  elevation: 0,
+                  child: const Icon(
+                    Icons.mic_none,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
                 15.w.horizontalSpace,
                 Expanded(
                   child: TextField(
                     style: TextStyle(fontSize: 19.sp),
                     controller: controller.questionController.value,
                     decoration: InputDecoration(
-                      hintText: "Ask a question...",
-                      hintStyle: TextStyle(color: Colors.grey, fontSize: 18.sp),
-                      border: InputBorder.none,
-                    ),
+                        hintText: "Ask a question...",
+                        hintStyle:
+                            TextStyle(color: Colors.grey, fontSize: 18.sp),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.only(
+                          bottom: 8.0,
+                        )),
                     maxLines: 1,
                   ),
                 ),

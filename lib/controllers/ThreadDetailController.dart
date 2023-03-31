@@ -6,7 +6,9 @@ import 'package:flutter_gif/flutter_gif.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:univ_chat_gpt/models/QuestionModel.dart';
+import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/services/TextToSpeechService.dart';
 import 'package:univ_chat_gpt/services/ThreadService.dart';
 import 'package:http/http.dart' as http;
@@ -22,9 +24,8 @@ class ThreadDetailController extends GetxController
   String? email;
   String? fullName;
 
-  late final gifController;
+  late final FlutterGifController gifController;
 
-  //chat variables
   final questionController = TextEditingController().obs;
 
   Future<void> send() async {
@@ -53,23 +54,41 @@ class ThreadDetailController extends GetxController
     await TextToSpeechService.speak(text);
   }
 
+  void listenToSpeech() {
+    if (SpeechToTextService.isListening.isFalse) {
+      SpeechToTextService.speech.listen(
+        onResult: (result) {
+          questionController.value.text = result.recognizedWords;
+          TextSelection.fromPosition(
+              TextPosition(offset: questionController.value.text.length));
+          questionController.value.selection = TextSelection.collapsed(
+              offset: questionController.value.text.length);
+        },
+        pauseFor: const Duration(seconds: 3),
+      );
+    } else {
+      SpeechToTextService.speech.stop();
+    }
+  }
+
   void copy(String text) {
     Clipboard.setData(ClipboardData(text: text));
     Fluttertoast.showToast(
-                msg: "Copied to Clipboard",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: primaryColor.withOpacity(0.6),
-                textColor: Colors.white,
-                fontSize: 14.0);
+        msg: "Copied to Clipboard",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: primaryColor.withOpacity(0.6),
+        textColor: Colors.white,
+        fontSize: 14.0);
   }
 
   @override
   Future<void> onInit() async {
     gifController = FlutterGifController(vsync: this);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      gifController.animateTo(112.0, duration: Duration(milliseconds: 3000));
+      gifController.animateTo(112.0,
+          duration: const Duration(milliseconds: 3000));
       // gifController.repeat(
       //   min: 0.0,
       //   max: 53.0,
@@ -86,7 +105,6 @@ class ThreadDetailController extends GetxController
             "first face the main entrance, then walk straight ahead until you reach the intersection.",
         tag: "blocks and buildings"));
 
-    print(questions.length);
     /*isLoading.value = true;
     final user = await UserService.getCurrentProfile();
     currentUser = user.obs;
