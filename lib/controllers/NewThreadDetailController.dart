@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/models/QuestionModel.dart';
 import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/services/TextToSpeechService.dart';
@@ -12,14 +13,13 @@ import 'package:univ_chat_gpt/services/ThreadService.dart';
 import 'package:http/http.dart' as http;
 
 import '../app/Colors.dart';
-import '../models/ThreadModel.dart';
 
-class ThreadDetailController extends GetxController {
-  late Rx<Thread> currentThread;
+class NewThreadDetailController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   Rx<bool> isLoading = true.obs;
-
   final scrollController = ScrollController();
-  //RxList<Question?> questions = List<Question>.empty().obs;
+  String threadId = "";
+  RxList<Question> questions = List<Question>.empty().obs;
   String? email;
   String? fullName;
 
@@ -28,18 +28,39 @@ class ThreadDetailController extends GetxController {
   final questionController = TextEditingController().obs;
 
   Future<void> send() async {
+    //move();
+
     if (questionController.value.text.isNotEmpty) {
       http.Response response = await ThreadService.postQuestion(
-          questionController.value.text, currentThread?.value.id);
-      Map<String, dynamic> body = jsonDecode(response.body);
-      Question q = Question.fromJson(body["question"]);
-      currentThread.value.questions.add(q);
-      currentThread.refresh();
-      FocusScope.of(Get.context!).requestFocus(FocusNode());
-      scrollController.animateTo(scrollController.position.maxScrollExtent,
-          duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
-      questionController.value.clear();
+          questionController.value.text, threadId);
+      if (response.statusCode == 201) {
+        Map<String, dynamic> body = jsonDecode(response.body);
+        Question q = Question.fromJson(body["question"]);
+        threadId = q.thread ?? "";
+        questions.add(q);
+        FocusScope.of(Get.context!).requestFocus(FocusNode());
+        questionController.value.clear();
+        if (questions.length > 1) {
+          scrollController.animateTo(scrollController.position.maxScrollExtent,
+              duration: const Duration(seconds: 1),
+              curve: Curves.fastOutSlowIn);
+        }
+        return;
+      }
+      Fluttertoast.showToast(
+          msg: "Error connecting to server",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: primaryColor.withOpacity(0.6),
+          textColor: Colors.white,
+          fontSize: 14.0);
     }
+  }
+
+  void move() {
+    gifController.value = 0.0;
+    gifController.animateTo(112.0, duration: Duration(milliseconds: 3000));
   }
 
   void readText(String text) async {
@@ -77,7 +98,8 @@ class ThreadDetailController extends GetxController {
 
   @override
   void onReady() {
-    if (currentThread != null) {
+    /*
+    if (currentThread.value != null) {
       isLoading.value = true;
       /*final user = await UserService.getCurrentProfile();
       currentUser = user.obs;
@@ -85,13 +107,22 @@ class ThreadDetailController extends GetxController {
         email = currentUser?.value?.email;
         fullName = currentUser?.value?.fullname;*/
       isLoading.value = false;
-    }
+    }*/
   }
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    currentThread = Rx(Get.arguments[0]);
+    gifController = FlutterGifController(vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      gifController.animateTo(112.0,
+          duration: const Duration(milliseconds: 3000));
+      // gifController.repeat(
+      //   min: 0.0,
+      //   max: 53.0,
+      //   period: const Duration(milliseconds: 1000),
+      // );
+    });
   }
 
   @override

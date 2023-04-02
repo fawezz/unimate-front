@@ -15,10 +15,17 @@ class ThreadHistoryView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('History', style: Theme.of(context).appBarTheme.titleTextStyle,),
+          title: Text(
+            'History',
+            style: Theme.of(context).appBarTheme.titleTextStyle,
+          ),
         ),
-        floatingActionButton: FloatingActionButton.small(
-            onPressed: null, child: Icon(Icons.add, color: Colors.white70,)),
+        floatingActionButton: const FloatingActionButton.small(
+            onPressed: null,
+            child: Icon(
+              Icons.add,
+              color: Colors.white70,
+            )),
         body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Padding(
             padding: EdgeInsets.only(top: 18.h),
@@ -68,6 +75,7 @@ class ThreadHistoryView extends StatelessWidget {
               ),
             ),
           ),
+          ////////////////////////////////////////////////////////////////////////
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -78,52 +86,57 @@ class ThreadHistoryView extends StatelessWidget {
               width: 1.sw,
               child: Padding(
                 padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
-                child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 8,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: GestureDetector(
-                          onTap: () => Get.toNamed(NamedRoutes.threadDetail),
-                          child: Container(
-                            height: 0.08.sh,
-                            width: 1.sw,
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 0.78.sw,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          "subject",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        10.h.verticalSpace,
-                                        Text(
-                                          "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: Colors.grey[400]),
-                                        )
-                                      ]),
+                child: Obx(() => controller.threads.isEmpty
+                    ? const Center(
+                        child: Text("You don't have any threads yet."))
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: controller.threads.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: GestureDetector(
+                              onTap: () => controller.navigateToDetails(index),
+                              child: Container(
+                                height: 0.08.sh,
+                                width: 1.sw,
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 0.75.sw,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              //controller.threads[index].title,
+                                              controller.threads[index].questions.first.tag!,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            10.h.verticalSpace,
+                                            Text(
+                                              controller.threads[index]
+                                                      .questions.first.prompt ??
+                                                  "error",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.grey[400]),
+                                            )
+                                          ]),
+                                    ),
+                                    5.w.horizontalSpace,
+                                    Text(
+                                      "11 May",
+                                      style: TextStyle(color: Colors.grey[400]),
+                                    )
+                                  ],
                                 ),
-                                5.w.horizontalSpace,
-                                Text(
-                                  "11 May",
-                                  style: TextStyle(
-                                      color: Colors.grey[400]),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        })),
               ),
             ),
           )

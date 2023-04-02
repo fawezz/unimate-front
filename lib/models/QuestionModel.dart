@@ -3,7 +3,7 @@ class Question {
   String? completion;
   String? tag;
   String? subtag;
-  String? user;
+  String? thread;
   String? id;
 
   Question(
@@ -11,7 +11,7 @@ class Question {
       this.completion,
       this.tag,
       this.subtag,
-      this.user,
+      this.thread,
       this.id});
 
   Question.fromJson(Map<String, dynamic> json) {
@@ -19,17 +19,17 @@ class Question {
     completion = json['completion'];
     tag = json['tag'];
     subtag = json['subtag'];
-    user = json['user'];
+    thread = json['thread'];
     id = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['prompt'] = prompt;
     data['completion'] = completion;
     data['tag'] = tag;
     data['subtag'] = subtag;
-    data['user'] = user;
+    data['thread'] = thread;
     data['_id'] = id;
     return data;
   }

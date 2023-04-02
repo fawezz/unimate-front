@@ -7,19 +7,20 @@ class SpeechToTextService {
   static RxBool isListening = false.obs;
 
   static void initSpeech() async {
-    speechEnabled = await speech.initialize(onStatus: (val) {
-      print('speech initiaize onStatus: $val');
-      if (val == "listening") {
-        isListening.value = true;
-      } else {
-        isListening.value = false;
-      }
-    }, onError: (val) {
-      print('speech initiaize onError: $val');
-              isListening.value = false;
-    },
-    finalTimeout: Duration(seconds: 10)
-    );
+    speechEnabled = await speech.initialize(
+        onStatus: (val) {
+          print('speech initiaize onStatus: $val');
+          if (val == "listening") {
+            isListening.value = true;
+          } else {
+            isListening.value = false;
+          }
+        },
+        onError: (val) {
+          print('speech initiaize onError: $val');
+          isListening.value = false;
+        },
+        finalTimeout: Duration(seconds: 10));
   }
 
   // bool available = await speech.initialize( onStatus: statusListener, onError: errorListener );

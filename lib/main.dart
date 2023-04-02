@@ -9,13 +9,14 @@ import 'package:univ_chat_gpt/views/EditProfileView.dart';
 import 'package:univ_chat_gpt/views/HomeView.dart';
 import 'package:univ_chat_gpt/views/SettingsView.dart';
 import 'package:univ_chat_gpt/views/ThreadHistoryView.dart';
-import 'package:univ_chat_gpt/views/ThreadDetailView.dart';
+import 'package:univ_chat_gpt/views/NewThreadDetailView.dart';
 import 'package:univ_chat_gpt/views/forgotPwd/ResetPasswordView.dart';
 import 'package:univ_chat_gpt/views/forgotPwd/ForgetPwdEmail.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 import 'package:univ_chat_gpt/views/SignUpView.dart';
 import 'app/Themes.dart';
 import 'services/TextToSpeechService.dart';
+import 'views/ThreadDetailView.dart';
 import 'views/forgotPwd/ForgetPwdOTPView.dart';
 
 Future<void> main() async {
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
               theme: Themes.lightTheme,
               darkTheme: Themes.darkTheme,
               themeMode: Themes.currentThemeMode.value,
-              home:  token == null ? LoginView() : HomeView(),
+              home: token == null ? LoginView() : HomeView(),
               getPages: [
                 GetPage(name: NamedRoutes.signUp, page: () => SignUpView()),
                 GetPage(name: NamedRoutes.login, page: () => LoginView()),
@@ -66,9 +67,10 @@ class MyApp extends StatelessWidget {
                 GetPage(name: NamedRoutes.home, page: () => HomeView()),
                 GetPage(
                     name: NamedRoutes.threadDetail,
-                    page: () => ThreadDetailView(
-                          isNewThread: false,
-                        )),
+                    page: () => ThreadDetailView()),
+                GetPage(
+                    name: NamedRoutes.newThreadDetail,
+                    page: () => NewThreadDetailView()),
                 GetPage(
                     name: NamedRoutes.threadHistory,
                     page: () => ThreadHistoryView()),

@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/controllers/HomeController.dart';
-import 'package:univ_chat_gpt/views/ThreadDetailView.dart';
-
-import '../app/Themes.dart';
+import 'package:univ_chat_gpt/views/NewThreadDetailView.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
@@ -22,7 +20,7 @@ class HomeView extends StatelessWidget {
         child: Scaffold(
             appBar: AppBar(
               toolbarTextStyle: Get.theme.appBarTheme.toolbarTextStyle,
-              title: Text(
+              title: const Text(
                 "New Thread",
               ),
               elevation: 0,
@@ -125,8 +123,6 @@ class HomeView extends StatelessWidget {
                 ],
               ),
             )),
-            body: ThreadDetailView(
-              isNewThread: true,
-            )));
+            body: NewThreadDetailView()));
   }
 }
