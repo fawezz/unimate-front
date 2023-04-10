@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
+import 'package:univ_chat_gpt/services/ConnectivityService.dart';
 import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/views/EditProfileView.dart';
 import 'package:univ_chat_gpt/views/HomeView.dart';
@@ -26,6 +27,8 @@ Future<void> main() async {
   String? theme = prefs.getString("theme");
   TextToSpeechService.initTTS();
   SpeechToTextService.initSpeech();
+  ConnectivityService connectivityService = ConnectivityService.instance;
+  connectivityService.initialise();
   runApp(MyApp(
     token: token,
   ));

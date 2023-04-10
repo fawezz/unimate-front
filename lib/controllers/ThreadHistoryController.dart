@@ -29,6 +29,7 @@ class ThreadHistoryController extends GetxController {
     http.Response response = await ThreadService.deleteThread(t.id!);
     Map<String, dynamic> body = jsonDecode(response.body);
     if (response.statusCode == 204) {
+      threads.removeAt(index);
       EasyLoading.showSuccess(body["message"]);
     } else {
       EasyLoading.showError(body["message"]);

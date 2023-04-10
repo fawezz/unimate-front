@@ -103,7 +103,7 @@ class ThreadHistoryView extends StatelessWidget {
                                 DismissDirection.endToStart: 0.7
                               },
                               background: Container(
-                                color: Color.fromARGB(255, 141, 13, 4),
+                                color: const Color.fromARGB(255, 141, 13, 4),
                                 child: const Icon(
                                   Icons.delete,
                                   color: Colors.white,
