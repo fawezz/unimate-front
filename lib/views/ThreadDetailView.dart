@@ -1,7 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gif/flutter_gif.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
@@ -60,8 +59,8 @@ class ThreadDetailView extends StatelessWidget {
                                 ),
                                 padding: const EdgeInsets.all(16),
                                 child: Text(
-                                  (controller.currentThread?.value
-                                          ?.questions[index].prompt) ??
+                                  (controller.currentThread.value
+                                          .questions[index].prompt) ??
                                       "error getting data",
                                   style: TextStyle(
                                       fontSize: 18.sp, color: Colors.white),
@@ -80,7 +79,7 @@ class ThreadDetailView extends StatelessWidget {
                                     onLongPress: () {
                                       controller.copy((controller
                                           .currentThread
-                                          ?.value
+                                          .value
                                           .questions[index]
                                           .completion)!);
                                     },
@@ -97,13 +96,13 @@ class ThreadDetailView extends StatelessWidget {
                                         ),
                                         padding: const EdgeInsets.all(16),
                                         child: index !=
-                                                (controller.currentThread!.value
+                                                (controller.currentThread.value
                                                         .questions.length -
                                                     1)
                                             ? Text(
                                                 (controller
                                                     .currentThread
-                                                    ?.value
+                                                    .value
                                                     .questions[index]
                                                     .completion)!,
                                                 style: TextStyle(
@@ -115,7 +114,7 @@ class ThreadDetailView extends StatelessWidget {
                                                   TypewriterAnimatedText(
                                                       (controller
                                                           .currentThread
-                                                          ?.value
+                                                          .value
                                                           .questions[index]
                                                           .completion)!,
                                                       textStyle: TextStyle(
@@ -129,7 +128,7 @@ class ThreadDetailView extends StatelessWidget {
                                 color: Colors.white,
                                 onPressed: () => controller.readText((controller
                                     .currentThread
-                                    ?.value
+                                    .value
                                     .questions[index]
                                     .completion)!),
                                 icon: IconTheme(

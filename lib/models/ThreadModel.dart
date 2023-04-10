@@ -4,14 +4,18 @@ class Thread {
   String title = "undetermined";
   String? user;
   String? id;
+  DateTime? updatedAt;
+  DateTime? createdAt;
   List<Question> questions = <Question>[];
 
-  Thread({required this.questions, required this.user, required this.id});
+  Thread({required this.questions,this.user,this.id});
 
   Thread.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     user = json['user'];
     id = json['_id'];
+    updatedAt = DateTime.parse(json['updatedAt']);
+    createdAt = DateTime.parse(json['createdAt']);
 
     questions = <Question>[];
     List<dynamic> jsonQuestions = json['questions'];

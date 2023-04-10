@@ -29,22 +29,22 @@ class HomeView extends StatelessWidget {
                 child: Obx(
               () => Column(
                 children: [
-                  controller.isLoading.value
+                  controller.currentUser.value == null
                       ? Container()
                       : UserAccountsDrawerHeader(
                           decoration: BoxDecoration(color: primaryColor),
-                          accountName: Text(
-                            controller.fullName!,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          accountName: Obx(() => Text(
+                                controller.currentUser.value!.fullname!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
                           accountEmail: Text(
-                            controller.email!,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                                controller.currentUser.value!.email!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                         ),
                   ListTile(
                     title: Text(
@@ -72,7 +72,8 @@ class HomeView extends StatelessWidget {
                         size: drawerIconSize,
                       ),
                     ),
-                    onTap: () => Get.toNamed(NamedRoutes.editProfile),
+                    onTap: () => Get.toNamed(NamedRoutes.editProfile)!
+                        .then((_) => controller.getProfile()),
                   ),
                   ListTile(
                     title: Text(

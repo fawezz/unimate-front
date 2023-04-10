@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -10,29 +11,37 @@ class ThreadService {
   static const predictSeqResponseUrl = "question/getseqrep";
 
   static const getThreadsByUserUrl = "thread/getall";
-  static const getThreadByIdUrl = "thread/getall";
+  static const getThreadByIdUrl = "thread/getone";
+  static const deleteThreadByIdUrl = "thread/delete";
+
+  static final client = http.Client();
 
   static Future<List<Thread>?> getThreadsByUser() async {
     Uri uri = Uri.parse(baseUrl + getThreadsByUserUrl);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token')!;
-
-    http.Response response = await http.get(uri, headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      HttpHeaders.authorizationHeader: 'Bearer $token'
-    });
-    Map<String, dynamic> body = jsonDecode(response.body);
-    List<Thread> threads = <Thread>[];
-    if (response.statusCode == 200) {
-      List<dynamic> jsonThreads = body['threads'];
-      jsonThreads.forEach((element) {
-        threads.add(Thread.fromJson(element));
+    try {
+      http.Response response = await client.get(uri, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      }).timeout(const Duration(seconds: 7), onTimeout: () {
+        throw TimeoutException('The connection has timed out');
       });
-      return threads;
-    }
-    if (response.statusCode == 404) {
-      return threads;
+      Map<String, dynamic> body = jsonDecode(response.body);
+      List<Thread> threads = <Thread>[];
+      if (response.statusCode == 200) {
+        List<dynamic> jsonThreads = body['threads'];
+        jsonThreads.forEach((element) {
+          threads.add(Thread.fromJson(element));
+        });
+        return threads;
+      }
+      if (response.statusCode == 404) {
+        return threads;
+      }
+    } catch (e) {
+      return null;
     }
     return null;
   }
@@ -44,16 +53,26 @@ class ThreadService {
     String token = prefs.getString('token')!;
     final data = {"threadId": threadId};
     String params = jsonEncode(data);
-    http.Response response = await http.get(uri, headers: <String, String>{
+    http.Response response = await client.get(uri, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       HttpHeaders.authorizationHeader: 'Bearer $token'
     });
-    Map<String, dynamic> body = jsonDecode(response.body);
-    print("get thread by id bbbbbb" + body.toString()); // to remove
     return response;
   }
 
-  //static Future<http.Response>deleteThread() async {}
+  static Future<http.Response> deleteThread(String threadId) async {
+    Uri uri = Uri.parse("$baseUrl$deleteThreadByIdUrl/$threadId");
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token')!;
+    final data = {"threadId": threadId};
+    String params = jsonEncode(data);
+    http.Response response = await client.delete(uri, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: 'Bearer $token'
+    });
+    return response;
+  }
 
   static Future<http.Response> postPredictTag(String question) async {
     Uri sendOTPUri = Uri.parse(baseUrl + predictThreadUrl);
@@ -63,12 +82,10 @@ class ThreadService {
     final data = {"prompt": question};
     String params = jsonEncode(data);
     http.Response response =
-        await http.post(sendOTPUri, body: params, headers: <String, String>{
+        await client.post(sendOTPUri, body: params, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       HttpHeaders.authorizationHeader: 'Bearer $token'
     });
-    Map<String, dynamic> body = jsonDecode(response.body);
-    print("aaaaaaaaaaa" + body.toString()); // to remove
     return response;
   }
 
@@ -81,12 +98,10 @@ class ThreadService {
     final data = {"prompt": question, "threadId": threadId};
     String params = jsonEncode(data);
     http.Response response =
-        await http.post(sendOTPUri, body: params, headers: <String, String>{
+        await client.post(sendOTPUri, body: params, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       HttpHeaders.authorizationHeader: 'Bearer $token'
     });
-    Map<String, dynamic> body = jsonDecode(response.body);
-    print("aaaaaaaaaaa" + body.toString()); // to remove
     return response;
   }
 }

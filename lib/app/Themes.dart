@@ -84,8 +84,8 @@ class Themes {
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: primaryColor,),
       primaryColor: primaryColor,
-      colorScheme: ColorScheme.dark(tertiary: HexColor("B2B3B7").withOpacity(0.15)),
-      iconTheme: IconThemeData(color: primaryColor),
+      colorScheme: ColorScheme.dark(tertiary: HexColor("B2B3B7").withOpacity(0.15), secondary: primaryColor),
+      iconTheme: IconThemeData(color: primaryColor,),
       primaryIconTheme: const IconThemeData(
         color: Colors.white,
       ),

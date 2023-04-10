@@ -12,9 +12,7 @@ class HomeController extends GetxController {
   Rx<bool> isLoading = true.obs;
 
   //drawer variables
-  Rx<User?>? currentUser;
-  String? email;
-  String? fullName;
+  Rx<User?> currentUser = null.obs;
 
   //chat variables
   final searchController = TextEditingController().obs;
@@ -27,6 +25,7 @@ class HomeController extends GetxController {
         desc: "Are you sure you want to logout ?",
         buttons: [
           DialogButton(
+              color: primaryColor,
               child: const Text(
                 "Logout",
                 style: TextStyle(color: Colors.white),
@@ -45,17 +44,28 @@ class HomeController extends GetxController {
     /**/
   }
 
+  Future<void> getProfile() async {
+    final user = await UserService.getCurrentProfile();
+    print(currentUser.value == null);
+    if (currentUser.value == null) {
+      currentUser = user.obs;
+    }
+    if (user != null) {
+      currentUser.update((value) {
+        value!.fullname = user.fullname;
+      });
+
+      currentUser.refresh();
+      isLoading.value = false;
+    } else {
+      //error getting user data from server
+    }
+  }
 
   @override
   Future<void> onInit() async {
     isLoading.value = true;
-    final user = await UserService.getCurrentProfile();
-    currentUser = user.obs;
-    if (currentUser?.value != null) {
-      email = currentUser?.value?.email;
-      fullName = currentUser?.value?.fullname;
-      isLoading.value = false;
-    }
+    getProfile();
     super.onInit();
   }
 

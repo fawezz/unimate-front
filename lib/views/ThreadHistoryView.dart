@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/controllers/ThreadHistoryController.dart';
-
+import 'package:intl/intl.dart';
 import '../app/Colors.dart';
-import '../app/Routes.dart';
 
 class ThreadHistoryView extends StatelessWidget {
   ThreadHistoryView({super.key});
@@ -93,45 +92,78 @@ class ThreadHistoryView extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         itemCount: controller.threads.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: GestureDetector(
-                              onTap: () => controller.navigateToDetails(index),
-                              child: Container(
-                                height: 0.08.sh,
-                                width: 1.sw,
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 0.75.sw,
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              //controller.threads[index].title,
-                                              controller.threads[index].questions.first.tag!,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            10.h.verticalSpace,
-                                            Text(
-                                              controller.threads[index]
-                                                      .questions.first.prompt ??
-                                                  "error",
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: Colors.grey[400]),
-                                            )
-                                          ]),
-                                    ),
-                                    5.w.horizontalSpace,
-                                    Text(
-                                      "11 May",
-                                      style: TextStyle(color: Colors.grey[400]),
-                                    )
-                                  ],
+                          final threadDate =
+                              controller.threads[index].updatedAt!;
+                          return GestureDetector(
+                            onTap: () => controller.navigateToDetails(index),
+                            child: Dismissible(
+                              key: Key(controller.threads[index].id!),
+                              direction: DismissDirection.endToStart,
+                              dismissThresholds: const {
+                                DismissDirection.endToStart: 0.7
+                              },
+                              background: Container(
+                                color: Color.fromARGB(255, 141, 13, 4),
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onDismissed: (direction) {
+                                controller.deleteThread(index);
+                              },
+                              confirmDismiss:
+                                  (DismissDirection direction) async {
+                                return await controller
+                                    .showDeleteConfirmation();
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Container(
+                                  color: Colors.transparent,
+                                  height: 0.08.sh,
+                                  width: 1.sw,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 0.75.sw,
+                                        child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                //controller.threads[index].title,
+                                                controller.threads[index]
+                                                    .questions.first.tag!,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              10.h.verticalSpace,
+                                              Text(
+                                                controller
+                                                        .threads[index]
+                                                        .questions
+                                                        .first
+                                                        .prompt ??
+                                                    "error",
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Colors.grey[400]),
+                                              )
+                                            ]),
+                                      ),
+                                      5.w.horizontalSpace,
+                                      Text(
+                                        DateFormat('dd MMMM')
+                                            .format(threadDate),
+                                        style:
+                                            TextStyle(color: Colors.grey[400]),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

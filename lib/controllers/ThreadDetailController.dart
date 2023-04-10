@@ -30,7 +30,7 @@ class ThreadDetailController extends GetxController {
   Future<void> send() async {
     if (questionController.value.text.isNotEmpty) {
       http.Response response = await ThreadService.postQuestion(
-          questionController.value.text, currentThread?.value.id);
+          questionController.value.text, currentThread.value.id);
       Map<String, dynamic> body = jsonDecode(response.body);
       Question q = Question.fromJson(body["question"]);
       currentThread.value.questions.add(q);
@@ -73,19 +73,6 @@ class ThreadDetailController extends GetxController {
         backgroundColor: primaryColor.withOpacity(0.6),
         textColor: Colors.white,
         fontSize: 14.0);
-  }
-
-  @override
-  void onReady() {
-    if (currentThread != null) {
-      isLoading.value = true;
-      /*final user = await UserService.getCurrentProfile();
-      currentUser = user.obs;
-      if (currentUser?.value != null) {
-        email = currentUser?.value?.email;
-        fullName = currentUser?.value?.fullname;*/
-      isLoading.value = false;
-    }
   }
 
   @override
