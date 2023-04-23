@@ -8,6 +8,7 @@ class User {
   bool? isBlocked;
   int? level;
   String? speciality;
+  int? classe;
 
   User({
     id,
@@ -19,6 +20,7 @@ class User {
     speciality,
     isBlocked,
     isVerified,
+    classe
   });
 
   User.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class User {
     isBlocked = json['isBlocked'];
     level = json['level'];
     speciality = json['speciality'];
+    classe = json['classe'];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,11 +47,12 @@ class User {
     data['isBlocked'] = isBlocked;
     data['level'] = level;
     data['speciality'] = speciality;
+    data['classe'] = classe;
     return data;
   }
 
   @override
   String toString() {
-    return 'User{Id: $id, fullname: $fullname, email: $email, role: $role, pic: $pic, isVerified: $isVerified, speciality: $speciality}';
+    return 'User{Id: $id, fullname: $fullname, email: $email, role: $role, pic: $pic, isVerified: $isVerified, speciality: $speciality, classe: $classe}';
   }
 }

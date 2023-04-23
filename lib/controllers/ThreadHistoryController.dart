@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:univ_chat_gpt/models/ThreadModel.dart';
 import 'package:univ_chat_gpt/services/ThreadService.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,8 @@ import '../app/Routes.dart';
 
 class ThreadHistoryController extends GetxController {
   Rx<bool> isLoading = true.obs;
-
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
   final searchController = TextEditingController().obs;
 
   RxList<Thread> threads = <Thread>[].obs;
@@ -57,14 +59,7 @@ class ThreadHistoryController extends GetxController {
     );
   }
 
-  @override
-  Future<void> onInit() async {
-    isLoading.value = true;
-    EasyLoading.show(
-        status: 'Loading..',
-        dismissOnTap: false,
-        maskType: EasyLoadingMaskType.black);
-
+  Future<void> getThreads() async {
     List<Thread>? threadsResponse = await ThreadService.getThreadsByUser();
     if (threadsResponse == null) {
       Fluttertoast.showToast(
@@ -78,6 +73,20 @@ class ThreadHistoryController extends GetxController {
     } else {
       threads.value = threadsResponse;
     }
+    refreshController.refreshCompleted();
+    return Future(() => null);
+  }
+
+  @override
+  Future<void> onInit() async {
+    isLoading.value = true;
+    EasyLoading.show(
+        status: 'Loading..',
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black);
+
+    await getThreads();
+
     EasyLoading.dismiss();
     isLoading.value = false;
 

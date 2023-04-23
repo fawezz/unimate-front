@@ -8,6 +8,7 @@ import 'package:univ_chat_gpt/services/ConnectivityService.dart';
 import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/views/EditProfileView.dart';
 import 'package:univ_chat_gpt/views/HomeView.dart';
+import 'package:univ_chat_gpt/views/ScheduleView.dart';
 import 'package:univ_chat_gpt/views/SettingsView.dart';
 import 'package:univ_chat_gpt/views/ThreadHistoryView.dart';
 import 'package:univ_chat_gpt/views/NewThreadDetailView.dart';
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
                     name: NamedRoutes.threadHistory,
                     page: () => ThreadHistoryView()),
                 GetPage(name: NamedRoutes.settings, page: () => SettingsView()),
+                GetPage(name: NamedRoutes.schedule, page: () => ScheduleView()),
               ],
               builder: EasyLoading.init(),
             ));

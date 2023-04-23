@@ -20,9 +20,11 @@ class NewThreadDetailView extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       body: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        GifImage(
-          controller: controller.gifController,
-          image: AssetImage("assets/gifs/wavingBGIFV2.gif"),
+        Visibility(
+          child: GifImage(
+            controller: controller.gifController,
+            image: AssetImage("assets/gifs/wavingBGIFV2.gif"),
+          ),
         ),
         0.02.sh.verticalSpace,
         Expanded(
@@ -36,7 +38,7 @@ class NewThreadDetailView extends StatelessWidget {
                           "Ask a question",
                         ))
                     : ListView.builder(
-                        padding: EdgeInsets.only(top: 50),
+                        padding: EdgeInsets.only(top: 50.h),
                         controller: controller.scrollController,
                         physics:
                             const BouncingScrollPhysics(), //if it bounces then it wont scroll to the endd initially
@@ -50,8 +52,8 @@ class NewThreadDetailView extends StatelessWidget {
                               child: Align(
                                   alignment: Alignment.topRight,
                                   child: Container(
-                                    constraints: BoxConstraints(
-                                                maxWidth: 0.8.sw),
+                                    constraints:
+                                        BoxConstraints(maxWidth: 0.8.sw),
                                     decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(20),

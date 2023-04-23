@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Constants.dart';
 import 'package:http/http.dart' as http;
@@ -125,4 +126,17 @@ class UserService {
     final response = await request.send();
     return http.Response.fromStream(response);
   }
+/*
+  static Future<String> getSchedule() async {
+    Uri getScheduleUri = Uri.parse(scheduleBaseUrl);
+    print("inside get schedule");
+    http.Response response = await http.get(getScheduleUri);
+    //if (response.statusCode == 200) {
+    var dir = await getTemporaryDirectory();
+    print(dir);
+    File file = File(dir.path + "/emploie.pdf");
+    await file.writeAsBytes(response.bodyBytes, flush: true);
+    //}
+    return file.path;
+  }*/
 }

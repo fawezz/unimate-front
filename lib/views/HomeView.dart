@@ -40,11 +40,11 @@ class HomeView extends StatelessWidget {
                                 ),
                               )),
                           accountEmail: Text(
-                                controller.currentUser.value!.email!,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            controller.currentUser.value!.email!,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                   ListTile(
                     title: Text(
@@ -89,6 +89,23 @@ class HomeView extends StatelessWidget {
                     ),
                     onTap: () => Get.toNamed(NamedRoutes.settings),
                   ),
+                  controller.currentUser.value?.role == "STUDENT"
+                      ? ListTile(
+                          title: Text(
+                            'Schedule',
+                            style: TextStyle(fontSize: drawerTextSize),
+                          ),
+                          leading: IconTheme(
+                            data: Theme.of(context).primaryIconTheme,
+                            child: Icon(
+                              Icons.schedule_outlined,
+                              size: drawerIconSize,
+                            ),
+                          ),
+                          onTap: () => Get.toNamed(NamedRoutes.schedule,
+                              arguments: [controller.currentUser.value]),
+                        )
+                      : Container(),
                   ListTile(
                     title: Text(
                       'About Us',

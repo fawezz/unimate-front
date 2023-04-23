@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ConnectivityService {
@@ -14,20 +15,22 @@ class ConnectivityService {
   // 1.
   void initialise() async {
     ConnectivityResult result = await _networkConnectivity.checkConnectivity();
-    _checkStatus(result);
+
+    //_checkStatus(result);
     _networkConnectivity.onConnectivityChanged.listen((result) {
-      print(result);
+      result.printInfo();
       Get.snackbar(
           "internet status",
           result == ConnectivityResult.mobile ||
                   result == ConnectivityResult.wifi
               ? "you are connected"
-              : "you are offline");
+              : "you are offline",
+          duration: const Duration(seconds: 1, milliseconds: 300),
+          colorText: Colors.white);
       //_checkStatus(result);
     });
   }
 
-// 2.
   void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
@@ -38,7 +41,7 @@ class ConnectivityService {
     }
     _controller.sink.add({result: isOnline});
     Get.snackbar(
-        "internet sstatus",
+        "internet status",
         result != ConnectivityResult.none
             ? "you are connected"
             : "you are offline");

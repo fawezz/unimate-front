@@ -22,6 +22,7 @@ class NewThreadDetailController extends GetxController
   RxList<Question> questions = List<Question>.empty().obs;
   String? email;
   String? fullName;
+  RxInt gifIndex = 0.obs;   //0 = wave, 1 = idle, 2 = talk, 3 = idk
 
   late final FlutterGifController gifController;
 

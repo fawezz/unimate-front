@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:univ_chat_gpt/controllers/ThreadHistoryController.dart';
 import 'package:intl/intl.dart';
 import '../app/Colors.dart';
@@ -84,94 +85,103 @@ class ThreadHistoryView extends StatelessWidget {
                   color: thirdColor.withOpacity(0.18)),
               width: 1.sw,
               child: Padding(
-                padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
-                child: Obx(() => controller.threads.isEmpty
-                    ? const Center(
-                        child: Text("You don't have any threads yet."))
-                    : ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: controller.threads.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final threadDate =
-                              controller.threads[index].updatedAt!;
-                          return GestureDetector(
-                            onTap: () => controller.navigateToDetails(index),
-                            child: Dismissible(
-                              key: Key(controller.threads[index].id!),
-                              direction: DismissDirection.endToStart,
-                              dismissThresholds: const {
-                                DismissDirection.endToStart: 0.7
-                              },
-                              background: Container(
-                                color: const Color.fromARGB(255, 141, 13, 4),
-                                child: const Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              onDismissed: (direction) {
-                                controller.deleteThread(index);
-                              },
-                              confirmDismiss:
-                                  (DismissDirection direction) async {
-                                return await controller
-                                    .showDeleteConfirmation();
-                              },
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Container(
-                                  color: Colors.transparent,
-                                  height: 0.08.sh,
-                                  width: 1.sw,
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 0.75.sw,
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                //controller.threads[index].title,
-                                                controller.threads[index]
-                                                    .questions.first.tag!,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              10.h.verticalSpace,
-                                              Text(
-                                                controller
-                                                        .threads[index]
-                                                        .questions
-                                                        .first
-                                                        .prompt ??
-                                                    "error",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    color: Colors.grey[400]),
-                                              )
-                                            ]),
+                  padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
+                  child: SmartRefresher(
+                    enablePullDown: true,
+                    physics: const BouncingScrollPhysics(),
+                    controller: controller.refreshController,
+                    onRefresh: controller.getThreads,
+                    child: Obx(() => controller.threads.isEmpty
+                        ? const Center(
+                            child: Text("You don't have any threads yet."))
+                        : ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: controller.threads.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final threadDate =
+                                  controller.threads[index].updatedAt!;
+                              return GestureDetector(
+                                onTap: () =>
+                                    controller.navigateToDetails(index),
+                                child: Dismissible(
+                                  key: Key(controller.threads[index].id!),
+                                  direction: DismissDirection.endToStart,
+                                  dismissThresholds: const {
+                                    DismissDirection.endToStart: 0.7
+                                  },
+                                  background: Container(
+                                    color:
+                                        const Color.fromARGB(255, 141, 13, 4),
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  onDismissed: (direction) {
+                                    controller.deleteThread(index);
+                                  },
+                                  confirmDismiss:
+                                      (DismissDirection direction) async {
+                                    return await controller
+                                        .showDeleteConfirmation();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      height: 0.08.sh,
+                                      width: 1.sw,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 0.75.sw,
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    //controller.threads[index].title,
+                                                    controller.threads[index]
+                                                        .questions.first.tag!,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  10.h.verticalSpace,
+                                                  Text(
+                                                    controller
+                                                            .threads[index]
+                                                            .questions
+                                                            .first
+                                                            .prompt ??
+                                                        "error",
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.grey[400]),
+                                                  )
+                                                ]),
+                                          ),
+                                          5.w.horizontalSpace,
+                                          Text(
+                                            DateFormat('dd MMMM')
+                                                .format(threadDate),
+                                            style: TextStyle(
+                                                color: Colors.grey[400]),
+                                          )
+                                        ],
                                       ),
-                                      5.w.horizontalSpace,
-                                      Text(
-                                        DateFormat('dd MMMM')
-                                            .format(threadDate),
-                                        style:
-                                            TextStyle(color: Colors.grey[400]),
-                                      )
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        })),
-              ),
+                              );
+                            })),
+                  )),
             ),
-          )
+          ),
         ]),
       ),
     );
