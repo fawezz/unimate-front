@@ -20,12 +20,91 @@ class NewThreadDetailView extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       body: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        Visibility(
-          child: GifImage(
-            controller: controller.gifController,
-            image: AssetImage("assets/gifs/wavingBGIFV2.gif"),
-          ),
-        ),
+        Get.isDarkMode
+            ? Stack(children: [
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 0,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController0,
+                        image: const AssetImage("assets/gifs/0B.gif"),
+                      ),
+                    )),
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 1,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController1,
+                        image: const AssetImage("assets/gifs/1B.gif"),
+                      ),
+                    )),
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 2,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController2,
+                        image: const AssetImage("assets/gifs/2B.gif"),
+                      ),
+                    )),
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 3,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController3,
+                        image: const AssetImage("assets/gifs/3B.gif"),
+                      ),
+                    )),
+              ])
+            : Stack(children: [
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 0,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController0,
+                        image: const AssetImage("assets/gifs/0W.gif"),
+                      ),
+                    )),
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 1,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController1,
+                        image: const AssetImage("assets/gifs/1W.gif"),
+                      ),
+                    )),
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 2,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController2,
+                        image: const AssetImage("assets/gifs/2W.gif"),
+                      ),
+                    )),
+                Obx(() => Visibility(
+                      visible: controller.gifIndex.value == 3,
+                      maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
+                      child: GifImage(
+                        controller: controller.gifController3,
+                        image: const AssetImage("assets/gifs/3W.gif"),
+                      ),
+                    )),
+              ]),
         0.02.sh.verticalSpace,
         Expanded(
           child: Stack(

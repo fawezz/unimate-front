@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
@@ -14,8 +17,8 @@ class HomeController extends GetxController {
   //drawer variables
   Rx<User?> currentUser = null.obs;
 
-  //chat variables
-  final searchController = TextEditingController().obs;
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   Future<void> logout() async {
     Alert(
@@ -58,8 +61,16 @@ class HomeController extends GetxController {
       currentUser.refresh();
       isLoading.value = false;
     } else {
-      //error getting user data from server
+      Fluttertoast.showToast(
+          msg: "error retrieving user info",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: primaryColor.withOpacity(0.6),
+          textColor: Colors.white,
+          fontSize: 14.sp);
     }
+    refreshController.refreshCompleted();
   }
 
   @override

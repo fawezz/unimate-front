@@ -43,7 +43,7 @@ class ThreadDetailController extends GetxController {
   }
 
   void readText(String text) async {
-    await TextToSpeechService.speak(text);
+    await TextToSpeechService.speak(text, (){}, (){});
   }
 
   void listenToSpeech() {

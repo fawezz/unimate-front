@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -15,6 +16,8 @@ class UserService {
   static const userProfileUrl = "user/profile";
   static const updateProfileUrl = "user/updateprofile";
   static const uploadPictureUrl = "user/updateprofilepic";
+
+  static final client = http.Client();
 
   static Future<http.Response> postLogin(String email, String pwd) async {
     Uri signInUri = Uri.parse(baseUrl + signInUrl);
@@ -50,18 +53,23 @@ class UserService {
     Uri userProfileUri = Uri.parse(baseUrl + userProfileUrl);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token')!;
-
-    http.Response response =
-        await http.get(userProfileUri, headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      HttpHeaders.authorizationHeader: 'Bearer $token'
-    });
-    Map<String, dynamic> body = jsonDecode(response.body);
-    User? currentUser;
-    if (response.statusCode == 200) {
-      currentUser = User.fromJson(body['user']);
+    try {
+      http.Response response =
+          await client.get(userProfileUri, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer $token'
+      }).timeout(const Duration(seconds: 7), onTimeout: () {
+        throw TimeoutException('The connection has timed out');
+      });
+      Map<String, dynamic> body = jsonDecode(response.body);
+      User? currentUser;
+      if (response.statusCode == 200) {
+        currentUser = User.fromJson(body['user']);
+      }
+      return currentUser;
+    } catch (e) {
+      return null;
     }
-    return currentUser;
   }
 
   static Future<http.Response> putUpdateProfile(

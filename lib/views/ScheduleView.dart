@@ -33,7 +33,7 @@ class _ScheduleViewState extends State<ScheduleView> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back,
                 color: Theme.of(context).primaryIconTheme.color),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Get.back(),
           ),
           title: const Text("Schedule"),
           elevation: 0,

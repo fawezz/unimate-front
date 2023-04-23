@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/controllers/HomeController.dart';
@@ -30,7 +31,10 @@ class HomeView extends StatelessWidget {
               () => Column(
                 children: [
                   controller.currentUser.value == null
-                      ? Container()
+                      ? Container(
+                          color: primaryColor,
+                          height: 0.2.sh,
+                        )
                       : UserAccountsDrawerHeader(
                           decoration: BoxDecoration(color: primaryColor),
                           accountName: Obx(() => Text(
@@ -141,6 +145,11 @@ class HomeView extends StatelessWidget {
                 ],
               ),
             )),
-            body: NewThreadDetailView()));
+            body: SmartRefresher(
+                enablePullDown: true,
+                physics: const BouncingScrollPhysics(),
+                controller: controller.refreshController,
+                onRefresh: () => controller.getProfile(),
+                child: NewThreadDetailView())));
   }
 }

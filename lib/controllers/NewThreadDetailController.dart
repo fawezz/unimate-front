@@ -15,16 +15,19 @@ import 'package:http/http.dart' as http;
 import '../app/Colors.dart';
 
 class NewThreadDetailController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
   Rx<bool> isLoading = true.obs;
   final scrollController = ScrollController();
   String threadId = "";
   RxList<Question> questions = List<Question>.empty().obs;
   String? email;
   String? fullName;
-  RxInt gifIndex = 0.obs;   //0 = wave, 1 = idle, 2 = talk, 3 = idk
+  RxInt gifIndex = 0.obs; //0 = wave, 1 = idle, 2 = talk, 3 = idk
 
-  late final FlutterGifController gifController;
+  late final FlutterGifController gifController0;
+  late final FlutterGifController gifController1;
+  late final FlutterGifController gifController2;
+  late final FlutterGifController gifController3;
 
   final questionController = TextEditingController().obs;
 
@@ -60,12 +63,29 @@ class NewThreadDetailController extends GetxController
   }
 
   void move() {
-    gifController.value = 0.0;
-    gifController.animateTo(112.0, duration: Duration(milliseconds: 3000));
+    gifController0.value = 0.0;
+    gifController0.animateTo(112.0,
+        duration: const Duration(milliseconds: 3000));
   }
 
   void readText(String text) async {
-    await TextToSpeechService.speak(text);
+    gifController1.reset();
+    gifIndex.value = 2;
+    gifController2.repeat(
+        min: 0.0, max: 130.0, period: const Duration(milliseconds: 4000));
+    await TextToSpeechService.speak(text, () {}, () {
+      gifController2.stop(canceled: false);
+      gifIdleRepeat();
+      gifController2.reset();
+      // gifController2.animateTo(145);
+      // gifController2.addStatusListener((status) {
+      //   if (AnimationStatus.completed == status) {
+      //     print('aaaaaaaaaaaaaaaaaaaaa');
+      //     gifIdleRepeat();
+      //     gifController2.reset();
+      //   }
+      // });
+    });
   }
 
   void listenToSpeech() {
@@ -97,32 +117,28 @@ class NewThreadDetailController extends GetxController
         fontSize: 14.0);
   }
 
-  @override
-  void onReady() {
-    /*
-    if (currentThread.value != null) {
-      isLoading.value = true;
-      /*final user = await UserService.getCurrentProfile();
-      currentUser = user.obs;
-      if (currentUser?.value != null) {
-        email = currentUser?.value?.email;
-        fullName = currentUser?.value?.fullname;*/
-      isLoading.value = false;
-    }*/
+  void gifIdleRepeat() {
+    gifIndex.value = 1;
+    gifController1.repeat(
+        min: 0.0, max: 138, period: const Duration(milliseconds: 2000));
   }
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    gifController = FlutterGifController(vsync: this);
+    gifController0 = FlutterGifController(vsync: this);
+    gifController1 = FlutterGifController(vsync: this);
+    gifController2 = FlutterGifController(vsync: this);
+    gifController3 = FlutterGifController(vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      gifController.animateTo(112.0,
+      gifController0.animateTo(140.0,
           duration: const Duration(milliseconds: 3000));
-      // gifController.repeat(
-      //   min: 0.0,
-      //   max: 53.0,
-      //   period: const Duration(milliseconds: 1000),
-      // );
+      //gifController0.repeat(min: 0.0,max: 112, period: Duration(milliseconds: 3000));
+      gifController0.addStatusListener((status) {
+        print(status.toString());
+        gifIdleRepeat();
+        gifController0.removeStatusListener((status) {});
+      });
     });
   }
 
