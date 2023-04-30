@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/services/ConnectivityService.dart';
+import 'package:univ_chat_gpt/services/SocketService.dart';
 import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/views/EditProfileView.dart';
 import 'package:univ_chat_gpt/views/HomeView.dart';
@@ -30,6 +31,7 @@ Future<void> main() async {
   SpeechToTextService.initSpeech();
   ConnectivityService connectivityService = ConnectivityService.instance;
   connectivityService.initialise();
+
   runApp(MyApp(
     token: token,
   ));
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
                     name: NamedRoutes.threadHistory,
                     page: () => ThreadHistoryView()),
                 GetPage(name: NamedRoutes.settings, page: () => SettingsView()),
-                GetPage(name: NamedRoutes.schedule, page: () => ScheduleView()),
+                GetPage(name: NamedRoutes.schedule, page: () => const ScheduleView()),
               ],
               builder: EasyLoading.init(),
             ));

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,9 +9,11 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/services/UserService.dart';
+import 'package:univ_chat_gpt/views/LoginView.dart';
 
 import '../app/Routes.dart';
 import '../models/UserModel.dart';
+import '../services/SocketService.dart';
 
 class HomeController extends GetxController {
   Rx<bool> isLoading = true.obs;
@@ -36,7 +40,10 @@ class HomeController extends GetxController {
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.remove("token");
-                Get.offAllNamed(NamedRoutes.login);
+                SocketService.socket.disconnect();
+                Get.offAll(() => LoginView());
+                Timer(Duration(milliseconds: 300),
+                    () => Get.delete<HomeController>());
               }),
           DialogButton(
               color: secondaryColor,
@@ -76,7 +83,10 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     isLoading.value = true;
-    getProfile();
+    await getProfile();
+    if (currentUser.value?.role == "STUDENT") {
+      SocketService.initializeSocket();
+    }
     super.onInit();
   }
 
