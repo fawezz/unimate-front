@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gif/flutter_gif.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/models/QuestionModel.dart';
 import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/services/TextToSpeechService.dart';
@@ -16,12 +15,9 @@ import '../app/Colors.dart';
 
 class NewThreadDetailController extends GetxController
     with GetTickerProviderStateMixin {
-  Rx<bool> isLoading = true.obs;
-  final scrollController = ScrollController();
-  String threadId = "";
+  ScrollController scrollController = ScrollController();
+  static RxString threadId = "".obs;
   RxList<Question> questions = List<Question>.empty().obs;
-  String? email;
-  String? fullName;
   RxInt gifIndex = 0.obs; //0 = wave, 1 = idle, 2 = talk, 3 = idk
 
   late final FlutterGifController gifController0;
@@ -31,16 +27,26 @@ class NewThreadDetailController extends GetxController
 
   final questionController = TextEditingController().obs;
 
+  void reInit() {
+    scrollController = ScrollController();
+    threadId.value = "";
+    questions.clear();
+    gifIndex.value = 0; //0 = wave, 1 = idle, 2 = talk, 3 = idk
+    gifIdleRepeat();
+    questionController.value.clear();
+    SpeechToTextService.speech.stop();
+  }
+
   Future<void> send() async {
     //move();
 
     if (questionController.value.text.isNotEmpty) {
       http.Response response = await ThreadService.postQuestion(
-          questionController.value.text, threadId);
+          questionController.value.text, threadId.value);
       if (response.statusCode == 201) {
         Map<String, dynamic> body = jsonDecode(response.body);
         Question q = Question.fromJson(body["question"]);
-        threadId = q.thread ?? "";
+        threadId.value = q.thread ?? "";
         questions.add(q);
         FocusScope.of(Get.context!).requestFocus(FocusNode());
         questionController.value.clear();

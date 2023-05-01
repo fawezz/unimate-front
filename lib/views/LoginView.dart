@@ -23,20 +23,30 @@ class LoginView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              0.05.sh.verticalSpace,
+              //0.05.sh.verticalSpace,
+              Align(
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  width: 0.25.sw,
+                  height: 0.08.sh,
+                  child: Image.asset(Get.isDarkMode
+                      ? "assets/icons/espritDark.png"
+                      : "assets/icons/espritLight.png"),
+                ),
+              ),
               SizedBox(
-                height: 0.4.sw,
-                width: 0.4.sw,
+                height: 0.65.sw,
+                width: 0.65.sw,
                 child: Positioned(
                   left: 8,
                   child: CircleAvatar(
-                    radius: Get.width * 0.116,
-                    backgroundColor: primaryColor,
-                    //backgroundImage: Image.asset("assets/icons/seller.jpg").image,
+                    radius: Get.width * 0.2,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage:
+                        Image.asset("assets/icons/appLogo.png").image,
                   ),
                 ),
               ),
-              0.05.sh.verticalSpace,
               Text(
                 'Welcome Back!',
                 style: TextStyle(

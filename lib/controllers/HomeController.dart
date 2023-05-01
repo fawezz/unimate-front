@@ -8,6 +8,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
+import 'package:univ_chat_gpt/controllers/NewThreadDetailController.dart';
 import 'package:univ_chat_gpt/services/UserService.dart';
 import 'package:univ_chat_gpt/views/LoginView.dart';
 
@@ -23,6 +24,15 @@ class HomeController extends GetxController {
 
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
+
+  void restartController() {
+    NewThreadDetailController newThreadDetailController = Get.find();
+    newThreadDetailController.reInit();
+
+    // Get.delete<NewThreadDetailController>();
+    // Get.put(NewThreadDetailController);
+    print("restarted");
+  }
 
   Future<void> logout() async {
     Alert(
@@ -63,6 +73,8 @@ class HomeController extends GetxController {
     if (user != null) {
       currentUser.update((value) {
         value!.fullname = user.fullname;
+        //Scaffold.of(Get.context!).openEndDrawer();
+        //Scaffold.of(Get.context!).openDrawer();
       });
 
       currentUser.refresh();
