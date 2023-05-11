@@ -55,32 +55,48 @@ class EditProfileController extends GetxController {
         passwordController.value.text == "") {
       _showToast("No changes made");
     } else {
-      EasyLoading.show(status: 'loading...');
-      final response = await UserService.putUpdateProfile(
-          fullNameController.value.text, passwordController.value.text);
-      Map<String, dynamic> body = jsonDecode(response.body);
-      EasyLoading.dismiss();
-      switch (response.statusCode) {
-        case 200:
-          {
-            EasyLoading.showSuccess(body["message"]);
-            await Future.delayed(const Duration(milliseconds: 700));
-            Get.back();
-          }
-          break;
-        default:
-          {
-            Alert(context: Get.context!, title: "Error", desc: body["message"])
-                .show();
-          }
-          break;
+      if (validateFields()) {
+        EasyLoading.show(status: 'loading...');
+        final response = await UserService.putUpdateProfile(
+            fullNameController.value.text,
+            oldPasswordController.value.text,
+            passwordController.value.text);
+        Map<String, dynamic> body = jsonDecode(response.body);
+        EasyLoading.dismiss();
+        switch (response.statusCode) {
+          case 200:
+            {
+              EasyLoading.showSuccess(body["message"]);
+              await Future.delayed(const Duration(milliseconds: 700));
+              Get.back();
+            }
+            break;
+          default:
+            {
+              Alert(
+                      context: Get.context!,
+                      title: "Error",
+                      desc: body["message"])
+                  .show();
+            }
+            break;
+        }
       }
     }
   }
 
   bool validateFields() {
+    if (!passwordController.value.text.isBlank! &
+        oldPasswordController.value.text.isBlank!) {
+      Alert(
+              context: Get.context!,
+              title: "Attention",
+              desc: "Please enter your old password")
+          .show();
+      return false;
+    }
     if (validateName(fullNameController.value.text) != null ||
-        validatePassword(passwordController.value.text) != null ||
+        validatePassword(oldPasswordController.value.text) != null ||
         validatePasswordsMatching(password2Controller.value.text) != null ||
         validatePassword(passwordController.value.text) != null) {
       Alert(
@@ -104,11 +120,10 @@ class EditProfileController extends GetxController {
   }
 
   String? validatePassword(String? value) {
-    if (passwordController.value.text.length < 8) {
+    if (value!.length < 8) {
       return "Password must be at least 8 characters long";
-    } else {
-      return null;
     }
+    return null;
   }
 
   String? validatePasswordsMatching(String? value) {
@@ -161,103 +176,101 @@ class EditProfileController extends GetxController {
   showAddPictureBottomSheet() {
     showModalBottomSheet(
         context: Get.context!,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(40.0),
+        ),
         builder: (BuildContext context) {
-          return Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+          return Wrap(children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(Get.context!).appBarTheme.backgroundColor,
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40))),
-            child: Wrap(children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Center(
-                          child: Container(
-                        height: 8,
-                        width: 66,
-                        decoration: BoxDecoration(
-                            color: HexColor("##EBEBEB"),
-                            borderRadius: BorderRadius.circular(10)),
-                      )),
-                      0.03.sh.verticalSpace,
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (await Permission.camera.request().isGranted) {
-                              selectImage("CAMERA");
-                            } else {
-                              _showToast("Camera Permission Denied");
-                            }
-                          },
-                          child: Row(children: [
-                            Container(
-                              height: 40.h,
-                              width: 40.h,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#EBEFF2"),
-                                  borderRadius: BorderRadius.circular(40)),
-                              child: const Icon(Icons.camera_enhance_outlined),
+                    topRight: Radius.circular(40)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Center(
+                        child: Container(
+                      height: 8,
+                      width: 66,
+                      decoration: BoxDecoration(
+                          color: HexColor("##EBEBEB"),
+                          borderRadius: BorderRadius.circular(10)),
+                    )),
+                    0.03.sh.verticalSpace,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (await Permission.camera.request().isGranted) {
+                            selectImage("CAMERA");
+                          } else {
+                            _showToast("Camera Permission Denied");
+                          }
+                        },
+                        child: Row(children: [
+                          Container(
+                            height: 40.h,
+                            width: 40.h,
+                            decoration: BoxDecoration(
+                                color: HexColor("#EBEFF2"),
+                                borderRadius: BorderRadius.circular(40)),
+                            child: const Icon(Icons.camera_enhance_outlined),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 14),
+                            child: Text(
+                              "Camera",
+                              style: TextStyle(
+                                  color: Theme.of(Get.context!).primaryColor,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w500),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 14),
-                              child: Text(
-                                "Camera",
-                                style: TextStyle(
-                                    color: HexColor("#0A3C5F"),
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ]),
-                        ),
+                          ),
+                        ]),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (await Permission.storage.request().isGranted) {
-                              selectImage("GALLERY");
-                            } else {
-                              _showToast("Storage Permission Denied");
-                            }
-                          },
-                          child: Row(children: [
-                            Container(
-                              height: 40.h,
-                              width: 40.h,
-                              decoration: BoxDecoration(
-                                  color: HexColor("#EBEFF2"),
-                                  borderRadius: BorderRadius.circular(40)),
-                              child: const Icon(Icons.image),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (await Permission.storage.request().isGranted) {
+                            selectImage("GALLERY");
+                          } else {
+                            _showToast("Storage Permission Denied");
+                          }
+                        },
+                        child: Row(children: [
+                          Container(
+                            height: 40.h,
+                            width: 40.h,
+                            decoration: BoxDecoration(
+                                color: HexColor("#EBEFF2"),
+                                borderRadius: BorderRadius.circular(40)),
+                            child: const Icon(Icons.image),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 14),
+                            child: Text(
+                              "Gallery",
+                              style: TextStyle(
+                                  color: Theme.of(Get.context!).primaryColor,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w500),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 14),
-                              child: Text(
-                                "Gallery",
-                                style: TextStyle(
-                                    color: HexColor("#0A3C5F"),
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ]),
-                        ),
-                      )
-                    ],
-                  ),
+                          ),
+                        ]),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ]),
-          );
+            ),
+          ]);
         });
   }
 }

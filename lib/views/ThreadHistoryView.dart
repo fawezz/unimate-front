@@ -60,6 +60,7 @@ class ThreadHistoryView extends StatelessWidget {
                     filled: true,
                     fillColor: thirdColor.withOpacity(0.18),
                   ),
+                  onChanged: controller.searchTitles,
                 ),
               ),
             ),
@@ -91,20 +92,19 @@ class ThreadHistoryView extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     controller: controller.refreshController,
                     onRefresh: controller.getThreads,
-                    child: Obx(() => controller.threads.isEmpty
+                    child: Obx(() => controller.searchedThreads.isEmpty
                         ? const Center(
                             child: Text("You don't have any threads yet."))
                         : ListView.builder(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: controller.threads.length,
+                            itemCount: controller.searchedThreads.length,
                             itemBuilder: (BuildContext context, int index) {
-                              final threadDate =
-                                  controller.threads[index].updatedAt!;
                               return GestureDetector(
                                 onTap: () =>
                                     controller.navigateToDetails(index),
                                 child: Dismissible(
-                                  key: Key(controller.threads[index].id!),
+                                  key: Key(
+                                      controller.searchedThreads[index].id!),
                                   direction: DismissDirection.endToStart,
                                   dismissThresholds: const {
                                     DismissDirection.endToStart: 0.7
@@ -142,8 +142,10 @@ class ThreadHistoryView extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     //controller.threads[index].title,
-                                                    controller.threads[index]
-                                                        .questions.first.tag!,
+                                                    controller
+                                                        .searchedThreads[index]
+                                                        .title,
+                                                    //.questions.first.tag!,
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -151,7 +153,8 @@ class ThreadHistoryView extends StatelessWidget {
                                                   10.h.verticalSpace,
                                                   Text(
                                                     controller
-                                                            .threads[index]
+                                                            .searchedThreads[
+                                                                index]
                                                             .questions
                                                             .first
                                                             .prompt ??
@@ -168,7 +171,7 @@ class ThreadHistoryView extends StatelessWidget {
                                           5.w.horizontalSpace,
                                           Text(
                                             DateFormat('dd MMMM')
-                                                .format(threadDate),
+                                                .format(controller.searchedThreads[index].updatedAt!),
                                             style: TextStyle(
                                                 color: Colors.grey[400]),
                                           )

@@ -99,6 +99,7 @@ class EditProfileView extends StatelessWidget {
                       prefixIcon: Icons.lock_person_outlined,
                       textController: controller.oldPasswordController,
                       validatorFunction: controller.validatePassword,
+                      suffix: true,
                     ),
                     0.01.sh.verticalSpace,
                     InputField(

@@ -20,21 +20,29 @@ class ThreadHistoryController extends GetxController {
   final searchController = TextEditingController().obs;
 
   RxList<Thread> threads = <Thread>[].obs;
+  RxList<Thread> searchedThreads = <Thread>[].obs;
 
   void navigateToDetails(int index) {
-    Thread t = threads.elementAt(index);
+    Thread t = searchedThreads.elementAt(index);
     Get.toNamed(NamedRoutes.threadDetail, arguments: [t]);
   }
 
   void deleteThread(int index) async {
-    Thread t = threads.elementAt(index);
+    Thread t = searchedThreads.elementAt(index);
     http.Response response = await ThreadService.deleteThread(t.id!);
-    Map<String, dynamic> body = jsonDecode(response.body);
+    //print(response.body + "AAAAAAAAAAA");
+    //Map<String, dynamic> body = jsonDecode(response.body);
     if (response.statusCode == 204) {
-      threads.removeAt(index);
-      EasyLoading.showSuccess(body["message"]);
+      threads.value.removeWhere((element) => element.id! == t.id!);
+      searchedThreads.value.removeAt(index);
+      print("delete =  ${searchedThreads.length} ${threads.length}");
+      EasyLoading.showSuccess("Thread deleted!");
     } else {
-      EasyLoading.showError(body["message"]);
+      if (response.statusCode == 404) {
+        EasyLoading.showError("Thread not found!");
+      } else {
+        EasyLoading.showError("error");
+      }
     }
   }
 
@@ -72,9 +80,18 @@ class ThreadHistoryController extends GetxController {
           fontSize: 14.sp);
     } else {
       threads.value = threadsResponse;
+      searchedThreads.value = threads;
     }
     refreshController.refreshCompleted();
     return Future(() => null);
+  }
+
+  void searchTitles(String? searchText) {
+    searchedThreads.value = threads.value
+        .where((object) =>
+            object.title.toLowerCase().contains(searchText!.toLowerCase()))
+        .toList();
+    //print("$searchText =  ${searchedThreads.length} ${threads.length}");
   }
 
   @override

@@ -80,14 +80,14 @@ class UserService {
   }
 
   static Future<http.Response> putUpdateProfile(
-      String fullName, String? pwd) async {
+      String fullName, String? oldPwd, String? pwd) async {
     Uri updateProfileUri = Uri.parse(baseUrl + updateProfileUrl);
     pwd ??= "";
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token')!;
 
-    final data = {"fullname": fullName, "pwd": pwd};
+    final data = {"fullname": fullName, "old_pwd": oldPwd, "new_pwd": pwd};
     String params = jsonEncode(data);
     http.Response response = await http
         .put(updateProfileUri, body: params, headers: <String, String>{
