@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/custom_widgets/InputField.dart';
 import 'package:univ_chat_gpt/custom_widgets/RedButton.dart';
+import '../app/Colors.dart';
 import '../controllers/SignUpController.dart';
 
 class SignUpView extends StatelessWidget {
@@ -107,6 +108,11 @@ class SignUpView extends StatelessWidget {
                             items: controller.getLevelDropDownItems,
                             onChanged: (int? value) {
                               controller.levelValue.value = value!;
+
+                              controller.specialityValue.value =
+                                  controller.levelValue.value == 3
+                                      ? controller.specialityOptions3rdYear[0]
+                                      : controller.specialityOptions4thYear[0];
                             })),
                       ],
                     )
@@ -135,6 +141,66 @@ class SignUpView extends StatelessWidget {
                               controller.specialityValue.value = value!;
                             })),
                       ],
+                    )
+                  : Container()),
+              Obx(() => controller.roleValue.value == controller.roleOptions[1]
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
+                              child: Text(
+                                "Class",
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: SizedBox(
+                              width: 0.3.sw,
+                              child: Obx(
+                                () => TextFormField(
+                                  controller: controller.classeController.value,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  keyboardType: TextInputType.number,
+                                  maxLength: 2,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16.sp),
+                                  textAlignVertical: TextAlignVertical.center,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: secondaryColor,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 10.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        borderSide: const BorderSide(
+                                          width: 0,
+                                          style: BorderStyle.none,
+                                        ),
+                                      ),
+                                      prefixIcon: const Icon(
+                                        Icons.class_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      counterText: ""),
+                                  validator: controller.validateClasse,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : Container()),
               0.05.sh.verticalSpace,

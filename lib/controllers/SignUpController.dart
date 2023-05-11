@@ -11,13 +11,19 @@ class SignUpController extends GetxController {
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
   final password2Controller = TextEditingController().obs;
+  final classeController = TextEditingController().obs;
   RxInt levelValue = 1.obs;
-  RxString specialityValue = 'SIM'.obs;
+  RxInt classeValue = 1.obs;
+  RxString specialityValue = ''.obs;
   RxString roleValue = "Guest".obs;
-  final specialityOptions = <String>[
+  final specialityOptions3rdYear = <String>[
+    'A',
+    'B',
+  ];
+  final specialityOptions4thYear = <String>[
     'SIM',
-    'TWIN ',
-    'SLEAM ',
+    'TWIN',
+    'SLEAM',
     'NIDS',
     'SE',
     'ArcTIC'
@@ -31,19 +37,26 @@ class SignUpController extends GetxController {
       EasyLoading.show(status: 'loading...');
       int? lvl = levelValue.value;
       String? speciality = specialityValue.value;
+      int? classe = classeValue.value;
+
       if (roleValue.value != roleOptions[1]) {
-        lvl = speciality = null;
+        // not a student
+        lvl = speciality = classe = null;
+      } else {
+        // a student
+        if ((lvl) < 3) {
+          speciality = "A";
+        }
       }
-      if ((lvl ?? 0) < 3) {
-        speciality = null;
-      }
+
       final response = await UserService.postSignUp(
           nameController.value.text,
           emailController.value.text,
           passwordController.value.text,
           roleValue.value,
           lvl,
-          speciality);
+          speciality,
+          classe);
       EasyLoading.dismiss();
 
       Map<String, dynamic> body = jsonDecode(response.body);
@@ -78,7 +91,8 @@ class SignUpController extends GetxController {
         validatePassword(passwordController.value.text) != null ||
         validatePasswordsMatching(password2Controller.value.text) != null ||
         validateEmail(emailController.value.text) != null ||
-        validatePassword(passwordController.value.text) != null) {
+        validatePassword(passwordController.value.text) != null ||
+        validateClasse(classeController.value.text) != null) {
       Alert(
               context: Get.context!,
               title: "Attention",
@@ -125,23 +139,39 @@ class SignUpController extends GetxController {
     }
   }
 
+  String? validateClasse(String? value) {
+    if (classeController.value.isBlank! || value!.isEmpty) {
+      return "required field";
+    } else {
+      if (!value.isNumericOnly) {
+        return "invalid class";
+      }
+    }
+    classeValue.value = int.parse(value);
+    return null;
+  }
+
   List<DropdownMenuItem<String>> get getRoleDropDownItems {
     List<DropdownMenuItem<String>> menuItems = roleOptions
-        .map((String e) => DropdownMenuItem(child: Text(e), value: e))
+        .map((String e) => DropdownMenuItem(value: e, child: Text(e)))
         .toList();
     return menuItems;
   }
 
   List<DropdownMenuItem<int>> get getLevelDropDownItems {
     List<DropdownMenuItem<int>> menuItems = levelOptions
-        .map((int e) => DropdownMenuItem(child: Text("$e"), value: e))
+        .map((int e) => DropdownMenuItem(value: e, child: Text("$e")))
         .toList();
     return menuItems;
   }
 
   List<DropdownMenuItem<String>> get getSpecialityDropDownItems {
-    List<DropdownMenuItem<String>> menuItems = specialityOptions
-        .map((String e) => DropdownMenuItem(child: Text(e), value: e))
+    List<String> options = levelValue.value == 3
+        ? specialityOptions3rdYear
+        : specialityOptions4thYear;
+    print(specialityValue.value);
+    List<DropdownMenuItem<String>> menuItems = options
+        .map((String e) => DropdownMenuItem(value: e, child: Text(e)))
         .toList();
     return menuItems;
   }
