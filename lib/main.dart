@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:univ_chat_gpt/app/Routes.dart';
 import 'package:univ_chat_gpt/services/ConnectivityService.dart';
+import 'package:univ_chat_gpt/services/NotificationService.dart';
 import 'package:univ_chat_gpt/services/SocketService.dart';
 import 'package:univ_chat_gpt/services/SpeechToTextService.dart';
 import 'package:univ_chat_gpt/views/EditProfileView.dart';
@@ -32,6 +34,7 @@ Future<void> main() async {
   ConnectivityService connectivityService = ConnectivityService.instance;
   connectivityService.initialise();
 
+  NotificationService().initializePlatformNotifications();
   runApp(MyApp(
     token: token,
   ));
@@ -81,7 +84,9 @@ class MyApp extends StatelessWidget {
                     name: NamedRoutes.threadHistory,
                     page: () => ThreadHistoryView()),
                 GetPage(name: NamedRoutes.settings, page: () => SettingsView()),
-                GetPage(name: NamedRoutes.schedule, page: () => const ScheduleView()),
+                GetPage(
+                    name: NamedRoutes.schedule,
+                    page: () => const ScheduleView()),
               ],
               builder: EasyLoading.init(),
             ));

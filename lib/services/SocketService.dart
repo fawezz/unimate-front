@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:univ_chat_gpt/app/Constants.dart';
+import 'package:univ_chat_gpt/services/NotificationService.dart';
 
 class SocketService {
   static StreamController<String> streamController =
@@ -23,6 +24,7 @@ class SocketService {
     });
     socket.on('message', (data) {
       print('received message: $data');
+      NotificationService().showNotif();
     });
   }
 }

@@ -20,12 +20,12 @@ class ThreadHistoryView extends StatelessWidget {
             style: Theme.of(context).appBarTheme.titleTextStyle,
           ),
         ),
-        floatingActionButton: const FloatingActionButton.small(
+        /*floatingActionButton: const FloatingActionButton.small(
             onPressed: null,
             child: Icon(
               Icons.add,
               color: Colors.white70,
-            )),
+            )),*/
         body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Padding(
             padding: EdgeInsets.only(top: 18.h),

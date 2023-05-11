@@ -80,7 +80,7 @@ class SignUpView extends StatelessWidget {
                 ),
               ),
               Obx(() => DropdownButton<String>(
-                  hint: Text("Role"),
+                  hint: const Text("Role"),
                   value: controller.roleValue.value,
                   items: controller.getRoleDropDownItems,
                   onChanged: (String? value) {

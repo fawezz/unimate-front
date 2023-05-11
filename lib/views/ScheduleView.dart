@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:univ_chat_gpt/app/Colors.dart';
 import 'package:univ_chat_gpt/app/Constants.dart';
@@ -39,9 +40,9 @@ class _ScheduleViewState extends State<ScheduleView> {
           elevation: 0,
         ),
         body: Container(
-            child: PDF(
-              nightMode: Get.isDarkMode
-            ).cachedFromUrl(
+            child: const PDF(nightMode: false //Get.isDarkMode
+                    )
+                .cachedFromUrl(
           localFile,
           placeholder: (progress) => Center(
               child: SizedBox(
@@ -60,12 +61,19 @@ class _ScheduleViewState extends State<ScheduleView> {
             ),
           )),
           errorWidget: (error) => Center(
-              child: Column(
-            children: [
-              Center(
-                child: Text(error.toString()),
-              )
-            ],
+              child: SizedBox(
+            width: 200,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.report_problem_outlined,
+                  color: Colors.red,
+                  size: 120.sp,
+                ),
+                const Text("schedule not found"),
+              ],
+            ),
           )),
         )));
   }
