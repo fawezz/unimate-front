@@ -73,24 +73,32 @@ class SignUpView extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
-                      child: Text(
-                        "Role",
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
+                      child: SizedBox(
+                        width: 0.25.sw,
+                        child: Text(
+                          "Role",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
                   ),
                   Spacer(),
-                  Obx(() => DropdownButton<String>(
-                      hint: const Text("Role"),
-                      value: controller.roleValue.value,
-                      items: controller.getRoleDropDownItems,
-                      onChanged: (String? value) {
-                        controller.roleValue.value = value!;
-                      })),
-                      Spacer()
+                  Container(
+                    width: 0.25.sw,
+                    child: Obx(() => DropdownButton<String>(
+                        isExpanded: true,
+                        hint: const Text("Role"),
+                        value: controller.roleValue.value,
+                        items: controller.getRoleDropDownItems,
+                        onChanged: (String? value) {
+                          controller.roleValue.value = value!;
+                          controller.classeController.value.clear();
+                        })),
+                  ),
+                  Spacer()
                 ],
               ),
               Obx(() => controller.roleValue.value == controller.roleOptions[1]
@@ -100,26 +108,34 @@ class SignUpView extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
-                          child: Text(
-                            "Level",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
+                          child: SizedBox(
+                            width: 0.25.sw,
+                            child: Text(
+                              "Level",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
                         Spacer(),
-                        Obx(() => DropdownButton<int>(
-                            value: controller.levelValue.value,
-                            items: controller.getLevelDropDownItems,
-                            onChanged: (int? value) {
-                              controller.levelValue.value = value!;
+                        Container(
+                          width: 0.25.sw,
+                          child: Obx(() => DropdownButton<int>(
+                              isExpanded: true,
+                              value: controller.levelValue.value,
+                              items: controller.getLevelDropDownItems,
+                              onChanged: (int? value) {
+                                controller.levelValue.value = value!;
 
-                              controller.specialityValue.value =
-                                  controller.levelValue.value == 3
-                                      ? controller.specialityOptions3rdYear[0]
-                                      : controller.specialityOptions4thYear[0];
-                            })),
+                                controller.specialityValue.value =
+                                    controller.levelValue.value == 3
+                                        ? controller.specialityOptions3rdYear[0]
+                                        : controller
+                                            .specialityOptions4thYear[0];
+                              })),
+                        ),
                         Spacer()
                       ],
                     )
@@ -130,22 +146,29 @@ class SignUpView extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
-                          child: Text(
-                            "Speciality",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
+                          child: SizedBox(
+                            width: 0.25.sw,
+                            child: Text(
+                              "Speciality",
+                              style: TextStyle(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
                         Spacer(),
                         Obx(
-                          () => DropdownButton(
-                              value: controller.specialityValue.value,
-                              items: controller.getSpecialityDropDownItems,
-                              onChanged: (String? value) {
-                                controller.specialityValue.value = value!;
-                              }),
+                          () => Container(
+                            width: 0.25.sw,
+                            child: DropdownButton(
+                                isExpanded: true,
+                                value: controller.specialityValue.value,
+                                items: controller.getSpecialityDropDownItems,
+                                onChanged: (String? value) {
+                                  controller.specialityValue.value = value!;
+                                }),
+                          ),
                         ),
                         Spacer()
                       ],
@@ -154,59 +177,52 @@ class SignUpView extends StatelessWidget {
               Obx(() => controller.roleValue.value == controller.roleOptions[1]
                   ? Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
-                      child: Column(
+                      child: Row(
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: EdgeInsets.only(left: 20.w, bottom: 8.w),
-                              child: Text(
-                                "Class",
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              width: 0.3.sw,
-                              child: Obx(
-                                () => TextFormField(
-                                  controller: controller.classeController.value,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  keyboardType: TextInputType.number,
-                                  maxLength: 2,
+                              child: SizedBox(
+                                width: 0.25.sw,
+                                child: Text(
+                                  "Class",
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 16.sp),
-                                  textAlignVertical: TextAlignVertical.center,
-                                  decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: secondaryColor,
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 10.0),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        borderSide: const BorderSide(
-                                          width: 0,
-                                          style: BorderStyle.none,
-                                        ),
-                                      ),
-                                      prefixIcon: const Icon(
-                                        Icons.class_outlined,
-                                        color: Colors.white,
-                                      ),
-                                      counterText: ""),
-                                  validator: controller.validateClasse,
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                          Spacer(),
+                          SizedBox(
+                            width: 0.3.sw,
+                            child: Obx(
+                              () => TextFormField(
+                                controller: controller.classeController.value,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                keyboardType: TextInputType.number,
+                                maxLength: 2,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .appBarTheme
+                                        .titleTextStyle
+                                        ?.color,
+                                    fontSize: 16.sp),
+                                textAlignVertical: TextAlignVertical.center,
+                                decoration: InputDecoration(
+                                    hintText: "class number",
+                                    fillColor: secondaryColor,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 10.0),
+                                    counterText: ""),
+                                validator: controller.validateClasse,
+                              ),
+                            ),
+                          ),
+                          Spacer()
                         ],
                       ),
                     )

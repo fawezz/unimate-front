@@ -91,12 +91,20 @@ class SignUpController extends GetxController {
         validatePassword(passwordController.value.text) != null ||
         validatePasswordsMatching(password2Controller.value.text) != null ||
         validateEmail(emailController.value.text) != null ||
-        validatePassword(passwordController.value.text) != null ||
-        validateClasse(classeController.value.text) != null) {
+        validatePassword(passwordController.value.text) != null) {
       Alert(
               context: Get.context!,
               title: "Attention",
               desc: "Please fill all fields correctly")
+          .show();
+      return false;
+    }
+    if (roleValue.value == roleOptions[1] &&
+        validateClasse(classeController.value.text) != null) {
+      Alert(
+              context: Get.context!,
+              title: "Attention",
+              desc: "Your class number is required")
           .show();
       return false;
     }
