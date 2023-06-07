@@ -13,7 +13,7 @@ this app allows users to:
  
 ##Screen shots
 #Login
-![352763702_656039776434768_644655918040702083_n](https://github.com/fawezz/unimate-front/assets/99675442/cafd39c6-4320-4ea7-b4cb-cabbaaee0f0e | width=100)
+![352763702_656039776434768_644655918040702083_n](https://github.com/fawezz/unimate-front/assets/99675442/cafd39c6-4320-4ea7-b4cb-cabbaaee0f0e | width=100px)
 #Signup
 ![345234968_1054156885552113_3354458054698115202_n](https://github.com/fawezz/unimate-front/assets/99675442/8763682c-7545-4010-a8f5-19be8f04873a | width=100)
 #Settings
